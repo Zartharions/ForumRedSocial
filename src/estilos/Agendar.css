@@ -1,0 +1,32 @@
+
+
+.blog-container-cover {
+    background-color: #f4f4f4;
+    padding: 55px;
+}
+
+.container-info-cover {
+    text-align: center;
+}
+
+.form-container {
+    max-width: 600px;
+    padding: 15px;
+    background-color: #475ac233;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgb(87, 18, 18);
+}
+
+.form-group {
+    margin-bottom: 7px;
+    text-align: justify;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: Times;
+    font-size: 18px;
+    color: white; 
+}
+

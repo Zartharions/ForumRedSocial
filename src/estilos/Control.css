@@ -1,0 +1,60 @@
+
+.blog-container-cover {
+  background-color: #fff;
+  padding: 20px;
+}
+
+.container-info-cover {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.button-container {
+  display: flex;
+  justify-content: center;
+  margin: 20px 0;
+}
+
+
+.table-container {
+  max-height: 900px; 
+  overflow-y: auto;  
+  border: 1px solid #ccc;
+  margin: 20px 0; 
+}
+
+.tabla-reparaciones {
+  width: 100%; 
+  border-collapse: collapse; 
+}
+
+.tabla-reparaciones th, .tabla-reparaciones td {
+  padding: 7px; 
+  text-align: left; 
+  border-bottom: 1px solid #ccc; 
+}
+
+.tabla-reparaciones th {
+  background-color: #f4f4f4; 
+}
+
+.formulario-edicion {
+  margin-top: 20px; 
+  padding: 10px; 
+  border: 1px solid #ccc; 
+  background-color: #f9f9f9; 
+}
+
+.formulario-edicion label {
+  display: outside; 
+  margin-bottom: 10px; 
+}
+
+.formulario-edicion select, .formulario-edicion input {
+  width: 100%; 
+  padding: 7px; 
+  margin-top: 2px;
+  margin-bottom: 2px;
+  border: 1px solid #ccc;
+  border-radius: 7px; 
+}
