@@ -16,15 +16,16 @@ export const Auth = () => {
     const submit = async (e) => {
         e.preventDefault();
         const body = {
-            username: usuario,
-            password: password
+            login_user: usuario,
+            login_password: password
+             
         }
         try {
             // autenticar al usuario
-            const response = await axios.post('http://localhost:3200/login', body);
-            if (response.data.status_code === 200 && response.data.data.tipo_rol === 1) {
+            const response = await axios.post('http://127.0.0.1:5000/security/login', body);
+            if (response.data.status_code === 200 ) {
                 // guardar el tipo de usuario en el local storage
-                localStorage.setItem('user_type', JSON.stringify(response.data.data.tipo_rol));
+                
                 navigate('/');
             } else {
                 // mostrar error de autenticación
