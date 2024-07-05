@@ -24,12 +24,12 @@ export const Auth = () => {
             // autenticar al usuario
             const response = await axios.post('http://127.0.0.1:5000/security/login', body);
             if (response.data.status_code === 200 ) {
-                // guardar el tipo de usuario en el local storage
-                
-                navigate('/');
+
+                navigate('/dashboard');
             } else {
                 // mostrar error de autenticación
                 setError('Error en la autenticación, intente de nuevo.');
+                
             }
         } catch (error) {
             console.error('Error:', error);
@@ -68,7 +68,7 @@ export const Auth = () => {
                 </div>
                 <div id="derecho">
                     <div className="titulo">
-                        Bienvenido a JuanReparaciones
+                        Bienvenido al taller de segundo parcial
                     </div>
                     <div className="pie">
                         <a href="/">Regresar</a>
