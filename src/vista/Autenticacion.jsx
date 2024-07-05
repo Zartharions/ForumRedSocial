@@ -22,7 +22,7 @@ export const Auth = () => {
         }
         try {
             // autenticar al usuario
-            const response = await axios.post('http://127.0.0.1:5000/security/login', body);
+            const response = await axios.post('http://127.0.0.1:5000/segu/login', body);
             if (response.data.status_code === 200 ) {
 
                 navigate('/dashboard');
