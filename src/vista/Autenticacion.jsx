@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 
-export const Auth = () => {
+export const Auth = ({ onLoginSuccess }) => {
     
     // variables de estado
     const [usuario, setUsuario] = useState('');
@@ -18,18 +18,17 @@ export const Auth = () => {
         const body = {
             login_user: usuario,
             login_password: password
-             
-        }
+        };
+
         try {
             // autenticar al usuario
             const response = await axios.post('http://127.0.0.1:5000/segu/login', body);
-            if (response.data.status_code === 200 ) {
-
+            if (response.data.result) {
+                onLoginSuccess(response.data.data); // pasar datos del usuario a App
                 navigate('/dashboard');
             } else {
                 // mostrar error de autenticación
                 setError('Error en la autenticación, intente de nuevo.');
-                
             }
         } catch (error) {
             console.error('Error:', error);

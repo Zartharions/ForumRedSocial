@@ -42,6 +42,27 @@ body {
     background-color: #575757;
 }
 
+.submenu {
+    background-color: #444; /* Color de fondo del submenú */
+    padding: 10px 0;
+}
+
+.submenu li {
+    margin: 10px 0;
+}
+
+.submenu li a {
+    color: #fff;
+    text-decoration: none;
+    display: block;
+    padding: 5px 20px;
+    transition: background 0.3s;
+}
+
+.submenu li a:hover {
+    background-color: #666;
+}
+
 .main-content {
     margin-left: 250px;
     padding: 20px;
@@ -56,6 +77,7 @@ header {
 
 header h1 {
     margin: 0;
+    color: #333;
 }
 
 .cards {
@@ -73,63 +95,16 @@ header h1 {
     flex: 1;
     min-width: 200px;
     text-align: center;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
 }
 
 .card h3 {
     margin-top: 0;
+    color: #333;
 }
 
 .card p {
     font-size: 24px;
     margin: 10px 0 0;
-}
-
-.charts {
-    margin-top: 40px;
-}
-
-.chart {
-    background-color: #fff;
-    border: 1px solid #ddd;
-    border-radius: 5px;
-    padding: 20px;
-    margin-top: 20px;
-}
-
-.chart-placeholder {
-    height: 200px;
-    background-color: #f0f0f0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: #999;
-    font-size: 18px;
-}
-
-.user-list {
-    margin-top: 40px;
-}
-
-.user-list h2 {
-    margin-bottom: 20px;
-}
-
-.user-list table {
-    width: 100%;
-    border-collapse: collapse;
-    background-color: #fff;
-}
-
-.user-list table thead {
-    background-color: #f4f4f4;
-}
-
-.user-list table th, .user-list table td {
-    padding: 10px;
-    text-align: left;
-    border: 1px solid #ddd;
-}
-
-.user-list table th {
-    font-weight: bold;
+    color: #666;
 }

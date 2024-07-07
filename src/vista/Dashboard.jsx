@@ -1,115 +1,79 @@
-import React, { useState } from 'react';
-import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
 
-export const Dashboard = () => {
-    
-    // variables de estado
-    const [usuario, setUsuario] = useState('');
-    const [password, setPassword] = useState('');
-    const [error, setError] = useState('');
+export const Dashboard = ({ userData }) => {
+    const [expanded, setExpanded] = useState(null); // Estado para controlar qué opción está expandida
 
-    // hook de navegacion
-    const navigate = useNavigate();
-
-    // maneja el submit del formulario para autenticar al usuario
-    const submit = async (e) => {
-        e.preventDefault();
-        const body = {
-            login_user: usuario,
-            login_password: password
-             
+    useEffect(() => {
+        if (!userData) {
+            // redirigir a la página de autenticación si no hay datos de usuario
+            window.location.href = '/';
         }
-        try {
-            // autenticar al usuario
-            const response = await axios.post('http://127.0.0.1:5000/security/login', body);
-            if (response.data.status_code === 200 ) {
+    }, [userData]);
 
-                navigate('/');
-            } else {
-                // mostrar error de autenticación
-                setError('Error en la autenticación, intente de nuevo.');
-            }
-        } catch (error) {
-            console.error('Error:', error);
-            setError('Error en la autenticación, intente de nuevo.');
+    // Función para manejar el clic en un ítem del menú
+    const handleItemClick = (index) => {
+        if (expanded === index) {
+            setExpanded(null); // Si ya está expandido, cerrarlo
+        } else {
+            setExpanded(index); // De lo contrario, expandirlo
         }
     };
 
+    if (!userData) {
+        return <div>Cargando...</div>;
+    }
+
     return (
         <>
-        <div class="sidebar">
-        <h2>Dashboard</h2>
-        <ul>
-            <li><a href="#">Overview</a></li>
-            <li><a href="#">Analytics</a></li>
-            <li><a href="#">Reports</a></li>
-            <li><a href="#">Users</a></li>
-            <li><a href="#">Settings</a></li>
-            <li><a href="#">Help</a></li>
-        </ul>
-    </div>
-    <div class="main-content">
-        <header>
-            <h1>Dashboard Overview</h1>
-        </header>
-        <section class="cards">
-            <div class="card">
-                <h3>Total Users</h3>
-                <p>1,234</p>
+            <div className="sidebar">
+                <h2>Taller</h2>
+                <ul>
+                    <li onClick={() => handleItemClick(0)}>
+                        <a href="#">{userData.rol_name}</a>
+                        {expanded === 0 && (
+                            <ul className="submenu">
+                                <li><a href="#">{userData.user_names}</a></li>
+                                <li><a href="#">{userData.user_lastnames}</a></li>
+                                <li><a href="#">{userData.user_login_id}</a></li>
+                            </ul>
+                        )}
+                    </li>
+                    <li onClick={() => handleItemClick(1)}>
+                        <a href="#">{userData.mod_name}</a>
+                        {expanded === 1 && (
+                            <ul className="submenu">
+                                <li><a href="#">{userData.mod_description}</a></li>
+                                <li><a href="#">{userData.menu_name}</a></li>
+                            </ul>
+                        )}
+                    </li>
+                    <li><a href="#">Configuraciones</a></li>
+                    <li><a href="/">Logout</a></li>
+                </ul>
             </div>
-            <div class="card">
-                <h3>New Signups</h3>
-                <p>123</p>
+            <div className="main-content">
+                <header>
+                    <h1>Dashboard Overview</h1>
+                </header>
+                <section className="cards">
+                    <div className="card">
+                        <h3>Total Users</h3>
+                        <p>1,234</p>
+                    </div>
+                    <div className="card">
+                        <h3>New Signups</h3>
+                        <p>123</p>
+                    </div>
+                    <div className="card">
+                        <h3>Active Users</h3>
+                        <p>567</p>
+                    </div>
+                    <div className="card">
+                        <h3>Revenue</h3>
+                        <p>$12,345</p>
+                    </div>
+                </section>
             </div>
-            <div class="card">
-                <h3>Active Users</h3>
-                <p>567</p>
-            </div>
-            <div class="card">
-                <h3>Revenue</h3>
-                <p>$12,345</p>
-            </div>
-        </section>
-        <section class="charts">
-            <div class="chart">
-                <h3>Monthly Users</h3>
-                <div class="chart-placeholder">[Chart]</div>
-            </div>
-            <div class="chart">
-                <h3>Revenue Growth</h3>
-                <div class="chart-placeholder">[Chart]</div>
-            </div>
-        </section>
-        <section class="user-list">
-            <h2>Recent Users</h2>
-            <table>
-                <thead>
-                    <tr>
-                        <th>Name</th>
-                        <th>Email</th>
-                        <th>Joined</th>
-                        <th>Status</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>Jane Doe</td>
-                        <td>jane@example.com</td>
-                        <td>2024-07-01</td>
-                        <td>Active</td>
-                    </tr>
-                    <tr>
-                        <td>John Smith</td>
-                        <td>john@example.com</td>
-                        <td>2024-06-25</td>
-                        <td>Inactive</td>
-                    </tr>
-                  
-                </tbody>
-            </table>
-        </section>
-    </div>
-    </>
+        </>
     );
 };
