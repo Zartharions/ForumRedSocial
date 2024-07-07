@@ -7,13 +7,7 @@ body {
     background-color: #f4f4f9;
 }
 
-.main-content {
-    margin: 20px auto; /* Agregado para centrar vertical y horizontalmente */
-    padding: 20px;
-    flex-grow: 1;
-    background-color: #0c4e5f; /* Fondo del contenido principal */
-    max-width: calc(100% - 250px); /* Ajuste para evitar que el contenido se extienda más allá de la barra lateral */
-}
+
 
 /* Estilos para la barra lateral */
 .sidebar {
@@ -75,50 +69,5 @@ body {
     background-color: #666;
 }
 
-/* Estilos para el contenido principal */
-.main-content {
-    margin-left: 250px;
-    padding: 20px;
-    flex-grow: 1;
-    background-color: #0c4e5f; /* Fondo del contenido principal */
-}
 
-header {
-    background-color: #a7bebe; /* Fondo del encabezado */
-    padding: 20px;
-    border-bottom: 1px solid #ddd;
-}
 
-header h1 {
-    margin: 0;
-    color: #111213; /* Color del título del encabezado */
-}
-
-.cards {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 20px;
-    margin-top: 20px;
-}
-
-.card {
-    background-color: #fff;
-    border: 1px solid #ddd;
-    border-radius: 5px;
-    padding: 20px;
-    flex: 1;
-    min-width: 200px;
-    text-align: center;
-    box-shadow: 0 0 10px rgba(0,0,0,0.1);
-}
-
-.card h3 {
-    margin-top: 0;
-    color: #333;
-}
-
-.card p {
-    font-size: 24px;
-    margin: 10px 0 0;
-    color: #666;
-}

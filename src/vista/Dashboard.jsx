@@ -51,12 +51,7 @@ export const Dashboard = ({ userData }) => {
                     <li><a href="/">Logout</a></li>
                 </ul>
             </div>
-            <div className="main-content">
-                <header>
-                    <h1>Dashboard Overview</h1>
-                </header>
-                                    
-            </div>
+        
         </>
     );
 };
