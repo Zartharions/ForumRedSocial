@@ -1,3 +1,4 @@
+/* Estilos para todo el body */
 body {
     font-family: Arial, sans-serif;
     margin: 0;
@@ -6,10 +7,11 @@ body {
     background-color: #f4f4f9;
 }
 
+/* Estilos para la barra lateral */
 .sidebar {
     width: 250px;
-    background-color: #333;
-    color: #fff;
+    background-color: #a7bebe; /* Fondo de la barra lateral */
+    color: #111213; /* Color de texto */
     padding: 20px;
     height: 100vh;
     position: fixed;
@@ -19,6 +21,7 @@ body {
 .sidebar h2 {
     text-align: center;
     margin-bottom: 20px;
+    color: #dfcdc3; /* Color del título */
 }
 
 .sidebar ul {
@@ -31,7 +34,7 @@ body {
 }
 
 .sidebar ul li a {
-    color: #fff;
+    color: #111213; /* Color de texto en los enlaces */
     text-decoration: none;
     display: block;
     padding: 10px;
@@ -39,7 +42,8 @@ body {
 }
 
 .sidebar ul li a:hover {
-    background-color: #575757;
+    background-color: #249e3e; /* Color de fondo al hacer hover */
+    color: #000000; /* Color de texto al hacer hover */
 }
 
 .submenu {
@@ -63,21 +67,23 @@ body {
     background-color: #666;
 }
 
+/* Estilos para el contenido principal */
 .main-content {
     margin-left: 250px;
     padding: 20px;
     flex-grow: 1;
+    background-color: #0c4e5f; /* Fondo del contenido principal */
 }
 
 header {
-    background-color: #fff;
+    background-color: #a7bebe; /* Fondo del encabezado */
     padding: 20px;
     border-bottom: 1px solid #ddd;
 }
 
 header h1 {
     margin: 0;
-    color: #333;
+    color: #111213; /* Color del título del encabezado */
 }
 
 .cards {
