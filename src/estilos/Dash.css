@@ -47,7 +47,7 @@ body {
 }
 
 .submenu {
-    background-color: #444; /* Color de fondo del submenú */
+    background-color: #cfe8f3; /* Color de fondo del submenú (celeste más claro) */
     padding: 10px 0;
 }
 
@@ -56,7 +56,7 @@ body {
 }
 
 .submenu li a {
-    color: #fff;
+    color: #000;
     text-decoration: none;
     display: block;
     padding: 5px 20px;
