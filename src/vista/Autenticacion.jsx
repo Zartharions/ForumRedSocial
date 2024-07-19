@@ -70,7 +70,7 @@ export const Auth = ({ onLoginSuccess }) => {
                         Bienvenido al proyecto del segundo Parcial
                     </div>
                     <div className="pie">
-                        <a href="/">Regresar.</a>
+                        <a href="/registro">Registrarse.</a>
                     </div>
                 </div>
             </div>
