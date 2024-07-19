@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { Auth } from '../vista/Autenticacion';
 import { Dashboard } from '../vista/Dashboard';
 import { Register } from '../vista/Registro';
+import { CssBaseline, Container } from '@mui/material';
 import '../estilos/Auth.css';
 import '../estilos/Dash.css';
 
@@ -15,11 +16,14 @@ const App = () => {
 
   return (
     <Router>
-      <Routes>
-        <Route path="/" element={<Auth onLoginSuccess={handleLoginSuccess} />} />
-        <Route path="/dashboard" element={<Dashboard userData={userData} />} />
-        <Route path="/register" element={<Register />} />
-      </Routes>
+      <CssBaseline />
+      <Container maxWidth="lg">
+        <Routes>
+          <Route path="/" element={<Auth onLoginSuccess={handleLoginSuccess} />} />
+          <Route path="/dashboard" element={<Dashboard userData={userData} />} />
+          <Route path="/register" element={<Register />} />
+        </Routes>
+      </Container>
     </Router>
   );
 };

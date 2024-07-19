@@ -1,18 +1,19 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import { Container, Box, TextField, Button, Typography, Paper } from '@mui/material';
 
 export const Auth = ({ onLoginSuccess }) => {
     
-    // variables de estado
+    // Variables de estado
     const [usuario, setUsuario] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState('');
 
-    // hook de navegacion
+    // Hook de navegación
     const navigate = useNavigate();
 
-    // maneja el submit del formulario para autenticar al usuario
+    // Maneja el submit del formulario para autenticar al usuario
     const submit = async (e) => {
         e.preventDefault();
         const body = {
@@ -21,13 +22,13 @@ export const Auth = ({ onLoginSuccess }) => {
         };
 
         try {
-            // autenticar al usuario
+            // Autenticar al usuario
             const response = await axios.post('http://127.0.0.1:9002/segu/login', body);
             if (response.data.result) {
-                onLoginSuccess(response.data.data); // pasar datos del usuario a App
+                onLoginSuccess(response.data.data); // Pasar datos del usuario a App
                 navigate('/dashboard');
             } else {
-                // mostrar error de autenticación
+                // Mostrar error de autenticación
                 setError('Error en la autenticación, intente de nuevo.');
             }
         } catch (error) {
@@ -37,43 +38,44 @@ export const Auth = ({ onLoginSuccess }) => {
     };
 
     return (
-        <div id="contenedor">
-            <div id="contenedorcentrado">
-                <div id="login">
-                    <form id="loginform" onSubmit={submit}>
-                        <label htmlFor="usuario">Usuario</label>
-                        <input 
-                            id="usuario" 
-                            type="text" 
-                            name="usuario" 
-                            placeholder="Usuario" 
-                            onChange={(e) => setUsuario(e.target.value)}
-                            required 
-                        />
-                        <label htmlFor="password">Contraseña</label>
-                        <input 
-                            id="password" 
-                            type="password" 
-                            placeholder="Contraseña" 
-                            name="password" 
-                            onChange={(e) => setPassword(e.target.value)}
-                            required 
-                        />
-                        {error && <p style={{ color: 'red' }}>{error}</p>}
-                        <button type="submit" title="Ingresar" name="Ingresar">
-                            Ingresar
-                        </button>
-                    </form>
-                </div>
-                <div id="derecho">
-                    <div className="titulo">
-                        Bienvenido al proyecto del segundo Parcial
-                    </div>
-                    <div className="pie">
-                        <a href="/registro">Registrarse.</a>
-                    </div>
-                </div>
-            </div>
-        </div>
+        <Container component="main" maxWidth="xs" sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', height: '100vh', backgroundColor: '#5f6769' }}>
+            <Paper elevation={3} sx={{ padding: 4, backgroundColor: '#0c4e5f', borderRadius: 2 }}>
+                <Box component="form" onSubmit={submit} sx={{ display: 'flex', flexDirection: 'column' }}>
+                    <Typography variant="h5" align="center" sx={{ color: '#dfcdc3', marginBottom: 3 }}>
+                        Iniciar Sesión
+                    </Typography>
+                    <TextField
+                        label="Usuario"
+                        variant="outlined"
+                        value={usuario}
+                        onChange={(e) => setUsuario(e.target.value)}
+                        required
+                        fullWidth
+                        margin="normal"
+                        sx={{ input: { color: '#202427' } }}
+                    />
+                    <TextField
+                        label="Contraseña"
+                        type="password"
+                        variant="outlined"
+                        value={password}
+                        onChange={(e) => setPassword(e.target.value)}
+                        required
+                        fullWidth
+                        margin="normal"
+                        sx={{ input: { color: '#202427' } }}
+                    />
+                    {error && <Typography color="error" align="center" sx={{ marginTop: 2 }}>{error}</Typography>}
+                    <Button type="submit" variant="contained" color="primary" fullWidth sx={{ marginTop: 3 }}>
+                        Ingresar
+                    </Button>
+                </Box>
+                <Box sx={{ textAlign: 'center', marginTop: 3 }}>
+                    <Typography variant="body2" sx={{ color: '#8cb924' }}>
+                        <a href="/register" style={{ textDecoration: 'none', color: '#8cb924' }}>Registrarse</a>
+                    </Typography>
+                </Box>
+            </Paper>
+        </Container>
     );
 };

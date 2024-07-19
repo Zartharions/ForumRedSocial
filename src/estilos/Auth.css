@@ -1,46 +1,34 @@
-
 body {
     font-family: 'Overpass', sans-serif;
-    
     font-size: 100%;
     color: #1b262c;
-    
     margin: 0;
     background-color: #5f6769;
 }
-
 
 #contenedor {
     display: flex;
     align-items: center;
     justify-content: center;
-
     min-width: 100vw;
     min-height: 100vh;
     width: 100%;
     height: 100%;
-    
     background-image: url(../images/fondo-login.jpg);
     background-position: center;
     background-size: cover;
 }
 
-
 #contenedorcentrado {
     display: flex;
     align-items: center;
     justify-content: center;
-    flex-direction:row;
-    
+    flex-direction: row;
     background-color: #0c4e5f;
-    
-    border-radius: 10px 10px 10px 10px;
-    
-
+    border-radius: 10px;
     padding: 30px;
     box-sizing: border-box;
 }
-
 
 #login {
     width: 100%;
@@ -48,18 +36,15 @@ body {
     min-width: 320px;
     padding: 30px 30px 50px 30px;
     background-color: #a7bebe;
-     
-    border-radius: 3px 3px 3px 3px;
-     
+    border-radius: 3px;
     box-sizing: border-box;
-
 }
 
 #login label {
     display: block;
     font-family: 'Overpass', sans-serif;
     font-size: 120%;
-    color:#111213;
+    color: #111213;
     margin-top: 15px;
 }
 
@@ -67,19 +52,14 @@ body {
     font-family: 'Overpass', sans-serif;
     font-size: 110%;
     color: #202427;
-    
     display: block;
     width: 100%;
     height: 40px;
-    
     margin-bottom: 10px;
     padding: 5px 5px 5px 10px;
-    
     box-sizing: border-box;
-    
     border: none;
-    border-radius: 3px 3px 3px 3px;
-    
+    border-radius: 3px;
 }
 
 #login input::placeholder {
@@ -90,42 +70,34 @@ body {
 #login button {
     font-family: 'Overpass', sans-serif;
     font-size: 110%;
-    color:#000000;
+    color: #000000;
     width: 100%;
     height: 40px;
-    
-    
-    border-radius: 3px 3px 3px 3px;
-    
-    
+    border-radius: 3px;
     background-color: #ffffff;
-    
     margin-top: 10px;
 }
 
 #login button:hover {
     background-color: #249e3e;
-    color:#000000;
+    color: #000000;
 }
 
 #derecho {
-       
     text-align: center;
     width: 100%;
-
-    padding:20px 20px 20px 50px;
+    padding: 20px 20px 20px 50px;
     box-sizing: border-box;
 }
 
 .titulo {
     font-size: 270%;
-    color:#dfcdc3;
+    color: #dfcdc3;
 }
-
 
 .pie {
     font-size: 100%;
-    text-align: center;    
+    text-align: center;
     margin-top: 15px;
 }
 
@@ -135,6 +107,3 @@ body {
     color: #8cb924;
     margin-bottom: 3px;
 }
-
-
-
