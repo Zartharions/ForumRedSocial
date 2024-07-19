@@ -4,7 +4,6 @@ import { useNavigate } from 'react-router-dom';
 import { Container, Box, TextField, Button, Typography, Paper } from '@mui/material';
 
 export const Auth = ({ onLoginSuccess }) => {
-    
     // Variables de estado
     const [usuario, setUsuario] = useState('');
     const [password, setPassword] = useState('');
@@ -52,7 +51,7 @@ export const Auth = ({ onLoginSuccess }) => {
                         required
                         fullWidth
                         margin="normal"
-                        sx={{ input: { color: '#202427' } }}
+                        sx={{ input: { color: '#202427' }, '& .MuiOutlinedInput-root': { '& fieldset': { borderColor: '#202427' } } }}
                     />
                     <TextField
                         label="Contraseña"
@@ -63,7 +62,7 @@ export const Auth = ({ onLoginSuccess }) => {
                         required
                         fullWidth
                         margin="normal"
-                        sx={{ input: { color: '#202427' } }}
+                        sx={{ input: { color: '#202427' }, '& .MuiOutlinedInput-root': { '& fieldset': { borderColor: '#202427' } } }}
                     />
                     {error && <Typography color="error" align="center" sx={{ marginTop: 2 }}>{error}</Typography>}
                     <Button type="submit" variant="contained" color="primary" fullWidth sx={{ marginTop: 3 }}>

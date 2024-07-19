@@ -4,8 +4,6 @@ import { Auth } from '../vista/Autenticacion';
 import { Dashboard } from '../vista/Dashboard';
 import { Register } from '../vista/Registro';
 import { CssBaseline, Container } from '@mui/material';
-import '../estilos/Auth.css';
-import '../estilos/Dash.css';
 
 const App = () => {
   const [userData, setUserData] = useState(null);
