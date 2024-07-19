@@ -17,6 +17,7 @@ const App = () => {
       <Routes>
         <Route path="/" element={<Auth onLoginSuccess={handleLoginSuccess} />} />
         <Route path="/dashboard" element={<Dashboard userData={userData} />} />
+             
       </Routes>
     </Router>
   );

@@ -22,7 +22,7 @@ export const Auth = ({ onLoginSuccess }) => {
 
         try {
             // autenticar al usuario
-            const response = await axios.post('http://127.0.0.1:5000/segu/login', body);
+            const response = await axios.post('http://127.0.0.1:9002/segu/login', body);
             if (response.data.result) {
                 onLoginSuccess(response.data.data); // pasar datos del usuario a App
                 navigate('/dashboard');
@@ -67,10 +67,10 @@ export const Auth = ({ onLoginSuccess }) => {
                 </div>
                 <div id="derecho">
                     <div className="titulo">
-                        Bienvenido al taller de segundo parcial
+                        Bienvenido al proyecto del segundo Parcial
                     </div>
                     <div className="pie">
-                        <a href="/">Regresar</a>
+                        <a href="/">Regresar.</a>
                     </div>
                 </div>
             </div>
