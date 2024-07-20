@@ -5,6 +5,7 @@ import { Dashboard } from '../vista/Dashboard';
 import { Register } from '../vista/Registro';
 import { CssBaseline, Container } from '@mui/material';
 
+
 const App = () => {
   const [userData, setUserData] = useState(null);
 
@@ -15,7 +16,7 @@ const App = () => {
   return (
     <Router>
       <CssBaseline />
-      <Container maxWidth="lg">
+      <Container maxWidth="lg" sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', minHeight: '100vh', backgroundColor: '#f5f5f5' }}>
         <Routes>
           <Route path="/" element={<Auth onLoginSuccess={handleLoginSuccess} />} />
           <Route path="/dashboard" element={<Dashboard userData={userData} />} />

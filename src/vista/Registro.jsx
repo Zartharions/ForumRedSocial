@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import { Container, Box, TextField, Button, Typography, Paper, Grid } from '@mui/material';
 
 export const Register = () => {
     const [firstName, setFirstName] = useState('');
@@ -9,6 +10,7 @@ export const Register = () => {
     const [university, setUniversity] = useState('');
     const [email, setEmail] = useState('');
     const [phone, setPhone] = useState('');
+    const [password, setPassword] = useState('');
     const [error, setError] = useState('');
 
     const navigate = useNavigate();
@@ -21,13 +23,14 @@ export const Register = () => {
             username,
             university,
             email,
-            phone
+            phone,
+            password
         };
 
         try {
             const response = await axios.post('http://127.0.0.1:9002/segu/register', body);
             if (response.data.result) {
-                navigate('/login'); // Redirigir al login después del registro
+                navigate('/login'); // Redirect to login after registration
             } else {
                 setError('Error en el registro, intente de nuevo.');
             }
@@ -38,80 +41,185 @@ export const Register = () => {
     };
 
     return (
-        <div id="contenedor">
-            <div id="contenedorcentrado">
-                <div id="register">
-                    <form id="registerform" onSubmit={submit}>
-                        <label htmlFor="firstName">Nombres</label>
-                        <input
-                            id="firstName"
-                            type="text"
-                            name="firstName"
-                            placeholder="Nombres"
-                            onChange={(e) => setFirstName(e.target.value)}
-                            required
-                        />
-                        <label htmlFor="lastName">Apellidos</label>
-                        <input
-                            id="lastName"
-                            type="text"
-                            name="lastName"
-                            placeholder="Apellidos"
-                            onChange={(e) => setLastName(e.target.value)}
-                            required
-                        />
-                        <label htmlFor="username">Nombre de Usuario</label>
-                        <input
-                            id="username"
-                            type="text"
-                            name="username"
-                            placeholder="Nombre de Usuario"
-                            onChange={(e) => setUsername(e.target.value)}
-                            required
-                        />
-                        <label htmlFor="university">Universidad</label>
-                        <input
-                            id="university"
-                            type="text"
-                            name="university"
-                            placeholder="Universidad"
-                            onChange={(e) => setUniversity(e.target.value)}
-                            required
-                        />
-                        <label htmlFor="email">Correo Electrónico</label>
-                        <input
-                            id="email"
-                            type="email"
-                            name="email"
-                            placeholder="Correo Electrónico"
-                            onChange={(e) => setEmail(e.target.value)}
-                            required
-                        />
-                        <label htmlFor="phone">Celular</label>
-                        <input
-                            id="phone"
-                            type="tel"
-                            name="phone"
-                            placeholder="Celular"
-                            pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}"
-                            onChange={(e) => setPhone(e.target.value)}
-                            required
-                        />
-                        {error && <p style={{ color: 'red' }}>{error}</p>}
-                        <button type="submit" title="Registrarse" name="Registrarse">
+        <Container component="main" maxWidth="xl" sx={{ 
+            display: 'flex', 
+            alignItems: 'center', 
+            justifyContent: 'center', 
+            height: '100vh',
+            width: '115%', 
+            backgroundColor: '#5f6769', 
+            padding: 0,
+            margin: 0
+        }}>
+            <Box sx={{ 
+                display: 'flex', 
+                flexDirection: 'column', 
+                justifyContent: 'center', 
+                alignItems: 'center', 
+                width: '100%', 
+                maxWidth: '650px', 
+                padding: 2, 
+                backgroundColor: '#0c4e5f', 
+                borderRadius: 4
+            }}>
+                <Typography variant="h4" align="center" sx={{ 
+                    color: '#dfcdc3', 
+                    marginBottom: 1, 
+                    fontWeight: 'bold'
+                }}>
+                    ForumRSE
+                </Typography>
+                <Paper elevation={8} sx={{ 
+                    padding: 6, 
+                    backgroundColor: '#0c4e5f', 
+                    borderRadius: 16, 
+                    width: '100%', 
+                    maxWidth: '600px', 
+                    boxSizing: 'border-box'
+                }}>
+                    <Box component="form" onSubmit={submit} sx={{ 
+                        display: 'flex', 
+                        flexDirection: 'column' 
+                    }}>
+                        <Grid container spacing={0.5}>
+                            <Grid item xs={12} sm={6}>
+                                <TextField
+                                    label="Nombres"
+                                    variant="outlined"
+                                    value={firstName}
+                                    onChange={(e) => setFirstName(e.target.value)}
+                                    required
+                                    fullWidth
+                                    margin="normal"
+                                    sx={{input: { color: '#202427' }, 
+                                    '& .MuiOutlinedInput-root': { 
+                                        '& fieldset': { borderColor: '#202427' }, 
+                                        '&:hover fieldset': { borderColor: '#8cb924' } 
+                                    }, 
+                                    '& .MuiInputLabel-root': { color: '#dfcdc3' }, 
+                                    '& .MuiFormLabel-root.Mui-focused': { color: '#8cb924' } }}
+                                />
+                            </Grid>
+                            <Grid item xs={12} sm={6}>
+                                <TextField
+                                    label="Apellidos"
+                                    variant="outlined"
+                                    value={lastName}
+                                    onChange={(e) => setLastName(e.target.value)}
+                                    required
+                                    fullWidth
+                                    margin="normal"
+                                    sx={{input: { color: '#202427' }, 
+                                    '& .MuiOutlinedInput-root': { 
+                                        '& fieldset': { borderColor: '#202427' }, 
+                                        '&:hover fieldset': { borderColor: '#8cb924' } 
+                                    }, 
+                                    '& .MuiInputLabel-root': { color: '#dfcdc3' }, 
+                                    '& .MuiFormLabel-root.Mui-focused': { color: '#8cb924' } }}
+                                />
+                            </Grid>
+                            <Grid item xs={12} sm={6}>
+                                <TextField
+                                    label="Usuario"
+                                    variant="outlined"
+                                    value={username}
+                                    onChange={(e) => setUsername(e.target.value)}
+                                    required
+                                    fullWidth
+                                    margin="normal"
+                                    sx={{input: { color: '#202427' }, 
+                                    '& .MuiOutlinedInput-root': { 
+                                        '& fieldset': { borderColor: '#202427' }, 
+                                        '&:hover fieldset': { borderColor: '#8cb924' } 
+                                    }, 
+                                    '& .MuiInputLabel-root': { color: '#dfcdc3' }, 
+                                    '& .MuiFormLabel-root.Mui-focused': { color: '#8cb924' } }}
+                                />
+                            </Grid>
+                            <Grid item xs={12} sm={6}>
+                                <TextField
+                                    label="Universidad"
+                                    variant="outlined"
+                                    value={university}
+                                    onChange={(e) => setUniversity(e.target.value)}
+                                    required
+                                    fullWidth
+                                    margin="normal"
+                                    sx={{input: { color: '#202427' }, 
+                                    '& .MuiOutlinedInput-root': { 
+                                        '& fieldset': { borderColor: '#202427' }, 
+                                        '&:hover fieldset': { borderColor: '#8cb924' } 
+                                    }, 
+                                    '& .MuiInputLabel-root': { color: '#dfcdc3' }, 
+                                    '& .MuiFormLabel-root.Mui-focused': { color: '#8cb924' } }}
+                                />
+                            </Grid>
+                            <Grid item xs={12} sm={6}>
+                                <TextField
+                                    label="Correo electrónico"
+                                    variant="outlined"
+                                    value={email}
+                                    onChange={(e) => setEmail(e.target.value)}
+                                    required
+                                    fullWidth
+                                    margin="normal"
+                                    sx={{input: { color: '#202427' }, 
+                                    '& .MuiOutlinedInput-root': { 
+                                        '& fieldset': { borderColor: '#202427' }, 
+                                        '&:hover fieldset': { borderColor: '#8cb924' } 
+                                    }, 
+                                    '& .MuiInputLabel-root': { color: '#dfcdc3' }, 
+                                    '& .MuiFormLabel-root.Mui-focused': { color: '#8cb924' } }}
+                                />
+                            </Grid>
+                            <Grid item xs={12} sm={6}>
+                                <TextField
+                                    label="Teléfono"
+                                    variant="outlined"
+                                    value={phone}
+                                    onChange={(e) => setPhone(e.target.value)}
+                                    required
+                                    fullWidth
+                                    margin="normal"
+                                    sx={{input: { color: '#202427' }, 
+                                    '& .MuiOutlinedInput-root': { 
+                                        '& fieldset': { borderColor: '#202427' }, 
+                                        '&:hover fieldset': { borderColor: '#8cb924' } 
+                                    }, 
+                                    '& .MuiInputLabel-root': { color: '#dfcdc3' }, 
+                                    '& .MuiFormLabel-root.Mui-focused': { color: '#8cb924' } }}
+                                />
+                            </Grid>
+                            <Grid item xs={12} sm={6}>
+                                <TextField
+                                    label="Contraseña"
+                                    type="password"
+                                    variant="outlined"
+                                    value={password}
+                                    onChange={(e) => setPassword(e.target.value)}
+                                    required
+                                    fullWidth
+                                    margin="normal"
+                                    sx={{input: { color: '#202427' }, 
+                                    '& .MuiOutlinedInput-root': { 
+                                        '& fieldset': { borderColor: '#202427' }, 
+                                        '&:hover fieldset': { borderColor: '#8cb924' } 
+                                    }, 
+                                    '& .MuiInputLabel-root': { color: '#dfcdc3' }, 
+                                    '& .MuiFormLabel-root.Mui-focused': { color: '#8cb924' } }}
+                                />
+                            </Grid>
+                        </Grid>
+                        {error && <Typography color="error" align="center" sx={{ marginTop: 2 }}>{error}</Typography>}
+                        <Button type="submit" variant="contained" color="success" fullWidth sx={{ marginTop: 3 }}>
                             Registrarse
-                        </button>
-                    </form>
-                </div>
-                <div id="derecho">
-                    <div className="titulo">
-                        Bienvenido al proyecto del segundo Parcial
-                    </div>
-                    <div className="pie">
-                        <a href="/login">Iniciar sesión.</a>
-                    </div>
-                </div>
-            </div>
-        </div>
+                        </Button>
+                        <Button variant="contained" color="primary" fullWidth sx={{ marginTop: 3 }} onClick={() => navigate('/')}>
+                        Iniciar Sesión
+                        </Button>
+                    </Box>
+                </Paper>
+            </Box>
+        </Container>
     );
 };
