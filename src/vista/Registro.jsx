@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
-import { Container, Box, TextField, Button, Typography, Paper, Grid } from '@mui/material';
+import { Container, Box, TextField, Button, Typography, Paper, Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions } from '@mui/material';
 
 export const Register = () => {
     const [firstName, setFirstName] = useState('');
@@ -12,6 +12,7 @@ export const Register = () => {
     const [phone, setPhone] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState('');
+    const [success, setSuccess] = useState(false);
 
     const navigate = useNavigate();
 
@@ -30,6 +31,7 @@ export const Register = () => {
         try {
             const response = await axios.post('http://127.0.0.1:9002/segu/register', body);
             if (response.data.result) {
+                setSuccess(true);
                 navigate('/login'); // Redirect to login after registration
             } else {
                 setError('Error en el registro, intente de nuevo.');
@@ -38,6 +40,10 @@ export const Register = () => {
             console.error('Error:', error);
             setError('Error en el registro, intente de nuevo.');
         }
+    };
+
+    const handleClose = () => {
+        setSuccess(false);
     };
 
     return (
@@ -220,6 +226,18 @@ export const Register = () => {
                     </Box>
                 </Paper>
             </Box>
+            <Dialog open={success} onClose={handleClose}>
+                <DialogTitle>Registro Correcto</DialogTitle>
+                <DialogContent>
+                    <DialogContentText>
+                        Su registro se ha realizado con éxito.
+                    </DialogContentText>
+                </DialogContent>
+                <DialogActions>
+                    <Button onClick={handleClose}>Cerrar</Button>
+                </DialogActions>
+            </Dialog>
         </Container>
+        
     );
 };

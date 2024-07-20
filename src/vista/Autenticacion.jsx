@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
-import { Container, Box, TextField, Button, Typography, Paper } from '@mui/material';
+import { Container, Box, TextField, Button, Typography, Paper, Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions } from '@mui/material';
 
 export const Auth = ({ onLoginSuccess }) => {
     const [usuario, setUsuario] = useState('');
