@@ -6,7 +6,7 @@ import {
 } from '@mui/material';
 import { Search as SearchIcon, AccountCircle, MoreVert as MoreVertIcon, ThumbUp as ThumbUpIcon, Add as AddIcon, Comment as CommentIcon } from '@mui/icons-material';
 
-export const MainScreen = () => {
+export const MainScreen = ({ user, userGroups }) => {
     const [anchorEl, setAnchorEl] = useState(null);
     const [searchQuery, setSearchQuery] = useState('');
     const [postAnchorEl, setPostAnchorEl] = useState(null);
@@ -16,9 +16,9 @@ export const MainScreen = () => {
     const [comments, setComments] = useState({});
     const [newComment, setNewComment] = useState('');
     const [selectedPost, setSelectedPost] = useState(null);
-    
-    const [user, setUser] = useState(null);
-    const [groups, setGroups] = useState([]);
+
+    const [groups, setGroups] = useState(userGroups || []);
+
     const [posts, setPosts] = useState([
         { id_publicacion: 1, id_grupo: 1, grupo: 'Grupo 1', usuario: 'Usuario 1', descripcion: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus lacinia odio vitae vestibulum vestibulum. Cras venenatis euismod malesuada.', likes: 10, fecha_hora: new Date() },
         { id_publicacion: 2, id_grupo: 2, grupo: 'Grupo 2', usuario: 'Usuario 2', descripcion: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus lacinia odio vitae vestibulum vestibulum. Cras venenatis euismod malesuada.', likes: 5, fecha_hora: new Date() },
@@ -26,12 +26,8 @@ export const MainScreen = () => {
     ]);
 
     useEffect(() => {
-        const storedUser = JSON.parse(localStorage.getItem('user'));
-        if (storedUser) {
-            setUser(storedUser);
-            setGroups(storedUser.grupos);
-        }
-    }, []);
+        setGroups(userGroups || []);
+    }, [userGroups]);
 
     const handleMenu = (event) => {
         setAnchorEl(event.currentTarget);
@@ -74,13 +70,18 @@ export const MainScreen = () => {
     };
 
     const handleAddComment = () => {
-        if (selectedPost && newComment) {
+        if (newComment.trim()) {
+            const postComments = comments[selectedPost] || [];
             setComments({
                 ...comments,
-                [selectedPost]: [...(comments[selectedPost] || []), newComment]
+                [selectedPost]: [...postComments, { usuario: user.usuario, comentario: newComment, fecha_hora: new Date() }]
             });
             setNewComment('');
         }
+    };
+
+    const handleLogout = () => {
+        console.log('Logout');
     };
 
     return (
@@ -88,11 +89,31 @@ export const MainScreen = () => {
             <CssBaseline />
             <AppBar position="fixed">
                 <Toolbar>
-                    <Typography variant="h6" noWrap component="div" sx={{ flexGrow: 1 }}>
-                        ForumRSE
+                    <Typography variant="h6" noWrap sx={{ flexGrow: 1 }}>
+                        FORUMRS
+                    </Typography>
+                    <Box sx={{ flexGrow: 1, display: 'flex', alignItems: 'center' }}>
+                        <InputBase
+                            placeholder="Buscar..."
+                            inputProps={{ 'aria-label': 'search' }}
+                            sx={{
+                                color: 'inherit',
+                                '& .MuiInputBase-input': {
+                                    padding: '9px',
+                                    borderRadius: '4px',
+                                    backgroundColor: 'rgba(255, 255, 255, 0.15)',
+                                    '&:hover': { backgroundColor: 'rgba(255, 255, 255, 0.25)' },
+                                },
+                            }}
+                            startAdornment={<SearchIcon sx={{ marginRight: '8px' }} />}
+                            value={searchQuery}
+                            onChange={(e) => setSearchQuery(e.target.value)}
+                        />
+                    </Box>
+                    <Typography variant="body1" sx={{ marginRight: 2 }}>
+                        {user.usuario}
                     </Typography>
                     <IconButton
-                        size="large"
                         edge="end"
                         color="inherit"
                         aria-label="account of current user"
@@ -105,34 +126,24 @@ export const MainScreen = () => {
                     <Menu
                         id="menu-appbar"
                         anchorEl={anchorEl}
-                        anchorOrigin={{
-                            vertical: 'top',
-                            horizontal: 'right',
-                        }}
+                        anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
                         keepMounted
-                        transformOrigin={{
-                            vertical: 'top',
-                            horizontal: 'right',
-                        }}
+                        transformOrigin={{ vertical: 'top', horizontal: 'right' }}
                         open={Boolean(anchorEl)}
                         onClose={handleClose}
                     >
-                        <MenuItem onClick={handleClose}>Perfil</MenuItem>
-                        <MenuItem onClick={handleClose}>Cerrar sesión</MenuItem>
+                        <MenuItem onClick={handleClose}>Configuración</MenuItem>
+                        <MenuItem onClick={handleLogout}>Cerrar sesión</MenuItem>
                     </Menu>
                 </Toolbar>
             </AppBar>
             <Drawer
+                variant="permanent"
                 sx={{
                     width: 240,
                     flexShrink: 0,
-                    '& .MuiDrawer-paper': {
-                        width: 240,
-                        boxSizing: 'border-box',
-                    },
+                    [`& .MuiDrawer-paper`]: { width: 240, boxSizing: 'border-box', marginTop: '64px' },
                 }}
-                variant="permanent"
-                anchor="left"
             >
                 <Toolbar />
                 <Box sx={{ overflow: 'auto' }}>
@@ -145,7 +156,8 @@ export const MainScreen = () => {
                             ))
                         ) : (
                             <ListItem button onClick={handleCreateGroupOpen}>
-                                <ListItemText primary="Crear Grupo" />
+                                <AddIcon />
+                                <ListItemText primary="Crear grupo" />
                             </ListItem>
                         )}
                     </List>
@@ -153,100 +165,107 @@ export const MainScreen = () => {
             </Drawer>
             <Box
                 component="main"
-                sx={{ flexGrow: 1, bgcolor: 'background.paper', p: 3 }}
+                sx={{ flexGrow: 1, bgcolor: 'background.default', p: 3, marginTop: '64px' }}
             >
-                <Toolbar />
-                <Typography variant="h4" gutterBottom>
-                    Bienvenido, {user ? user.usuario : 'Invitado'}
-                </Typography>
-                <Typography variant="h6" gutterBottom>
-                    Publicaciones
-                </Typography>
-                <Paper sx={{ padding: 2, marginBottom: 2 }}>
+                <Container>
                     {posts.map((post) => (
-                        <Box key={post.id_publicacion} sx={{ marginBottom: 2 }}>
-                            <Typography variant="body1">{post.descripcion}</Typography>
-                            <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                                <IconButton color="primary">
-                                    <ThumbUpIcon />
-                                </IconButton>
-                                <Typography variant="body2">{post.likes} Likes</Typography>
-                                <IconButton
-                                    color="primary"
-                                    onClick={(e) => handlePostMenu(e, post.id_publicacion)}
-                                >
-                                    <CommentIcon />
-                                </IconButton>
-                                <Typography variant="body2">Comments</Typography>
-                            </Box>
+                        <Paper key={post.id_publicacion} sx={{ padding: 2, marginBottom: 2, position: 'relative', maxWidth: 600, minHeight: 100 }}>
+                            <IconButton
+                                size="small"
+                                sx={{ position: 'absolute', top: 8, right: 8 }}
+                                onClick={(event) => handlePostMenu(event, post.id_publicacion)}
+                            >
+                                <MoreVertIcon />
+                            </IconButton>
                             <Menu
-                                anchorEl={postAnchorEl?.[post.id_publicacion]}
-                                open={Boolean(postAnchorEl?.[post.id_publicacion])}
+                                anchorEl={postAnchorEl && postAnchorEl[post.id_publicacion]}
+                                open={Boolean(postAnchorEl && postAnchorEl[post.id_publicacion])}
                                 onClose={() => handlePostMenuClose(post.id_publicacion)}
                             >
-                                <MenuItem onClick={() => handleCommentClick(post.id_publicacion)}>Add Comment</MenuItem>
+                                <MenuItem onClick={() => console.log(`Reportar post ${post.id_publicacion}`)}>Reportar</MenuItem>
                             </Menu>
+                            <Typography variant="subtitle2">{post.grupo} {'>'} {post.usuario}</Typography>
+                            <Typography variant="body2" color="textSecondary">
+                                {new Date(post.fecha_hora).toLocaleString()}
+                            </Typography>
+                            <Typography variant="body1" sx={{ marginTop: 1, marginBottom: 1 }}>
+                                {post.descripcion}
+                            </Typography>
+                            <Button startIcon={<ThumbUpIcon />} onClick={() => console.log(`Like post ${post.id_publicacion}`)}>
+                                {post.likes} Like{post.likes !== 1 && 's'}
+                            </Button>
+                            <Button startIcon={<CommentIcon />} onClick={() => handleCommentClick(post.id_publicacion)}>
+                                Comentarios
+                            </Button>
+
                             {selectedPost === post.id_publicacion && (
                                 <Box sx={{ marginTop: 2 }}>
                                     <TextField
-                                        label="New Comment"
-                                        variant="outlined"
+                                        multiline
+                                        rows={2}
                                         fullWidth
                                         value={newComment}
                                         onChange={(e) => setNewComment(e.target.value)}
+                                        variant="outlined"
+                                        placeholder="Escribe tu comentario aquí..."
                                     />
                                     <Button
                                         variant="contained"
                                         color="primary"
-                                        onClick={handleAddComment}
                                         sx={{ marginTop: 1 }}
+                                        onClick={handleAddComment}
                                     >
-                                        Add Comment
+                                        Comentar
                                     </Button>
-                                    {comments[post.id_publicacion] && (
-                                        <Box sx={{ marginTop: 2 }}>
-                                            {comments[post.id_publicacion].map((comment, index) => (
-                                                <Typography key={index} variant="body2">
-                                                    {comment}
+                                    <Box sx={{ marginTop: 2 }}>
+                                    {comments[post.id_publicacion] && comments[post.id_publicacion].map((comment, index) => (
+                                            <Box key={index} sx={{ marginBottom: 1 }}>
+                                                <Typography variant="body2" color="textSecondary">
+                                                    {comment.usuario} - {new Date(comment.fecha_hora).toLocaleString()}
                                                 </Typography>
-                                            ))}
-                                        </Box>
-                                    )}
+                                                <Typography variant="body1">
+                                                    {comment.comentario}
+                                                </Typography>
+                                            </Box>
+                                        ))}
+                                    </Box>
                                 </Box>
                             )}
-                        </Box>
+                        </Paper>
                     ))}
-                </Paper>
-                <Dialog open={createGroupOpen} onClose={handleCreateGroupClose}>
-                    <DialogTitle>Crear Grupo</DialogTitle>
-                    <DialogContent>
-                        <DialogContentText>
-                            Por favor, ingrese el nombre y la descripción del nuevo grupo.
-                        </DialogContentText>
-                        <TextField
-                            autoFocus
-                            margin="dense"
-                            label="Nombre del Grupo"
-                            type="text"
-                            fullWidth
-                            value={newGroupName}
-                            onChange={(e) => setNewGroupName(e.target.value)}
-                        />
-                        <TextField
-                            margin="dense"
-                            label="Descripción"
-                            type="text"
-                            fullWidth
-                            value={newGroupDescription}
-                            onChange={(e) => setNewGroupDescription(e.target.value)}
-                        />
-                    </DialogContent>
-                    <DialogActions>
-                        <Button onClick={handleCreateGroupClose}>Cancelar</Button>
-                        <Button onClick={handleCreateGroup}>Crear</Button>
-                    </DialogActions>
-                </Dialog>
+                </Container>
             </Box>
+
+            {/* Dialog for creating a new group */}
+            <Dialog open={createGroupOpen} onClose={handleCreateGroupClose}>
+                <DialogTitle>Crear Nuevo Grupo</DialogTitle>
+                <DialogContent>
+                    <DialogContentText>
+                        Por favor ingrese el nombre y la descripción del nuevo grupo.
+                    </DialogContentText>
+                    <TextField
+                        autoFocus
+                        margin="dense"
+                        label="Nombre del Grupo"
+                        type="text"
+                        fullWidth
+                        value={newGroupName}
+                        onChange={(e) => setNewGroupName(e.target.value)}
+                    />
+                    <TextField
+                        margin="dense"
+                        label="Descripción"
+                        type="text"
+                        fullWidth
+                        value={newGroupDescription}
+                        onChange={(e) => setNewGroupDescription(e.target.value)}
+                    />
+                </DialogContent>
+                <DialogActions>
+                    <Button onClick={handleCreateGroupClose}>Cancelar</Button>
+                    <Button onClick={handleCreateGroup}>Crear</Button>
+                </DialogActions>
+            </Dialog>
         </Box>
     );
 };
