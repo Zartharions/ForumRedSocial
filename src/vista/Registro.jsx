@@ -19,15 +19,15 @@ export const Register = () => {
     const submit = async (e) => {
         e.preventDefault();
         const body = {
-            first_name: firstName,
-            last_name: lastName,
-            username,
-            university,
-            email,
-            phone,
-            password
+            usuario: username,               // Cambiar `username` a `usuario`
+            nombres: firstName,              // Cambiar `firstName` a `nombres`
+            apellidos: lastName,             // Cambiar `lastName` a `apellidos`
+            correo_electronico: email,       // Cambiar `email` a `correo_electronico`
+            contrasena: password,            // Cambiar `password` a `contrasena`
+            rol: 'usuario',                  // Campo opcional
+            universidad: university          // Campo opcional
         };
-
+    
         try {
             const response = await axios.post('http://127.0.0.1:9002/forum/register', body);
             if (response.data.result) {
@@ -41,6 +41,7 @@ export const Register = () => {
             setError('Error en el registro, intente de nuevo.');
         }
     };
+    
 
     const handleClose = () => {
         setSuccess(false);
@@ -220,7 +221,7 @@ export const Register = () => {
                         <Button type="submit" variant="contained" color="success" fullWidth sx={{ marginTop: 3 }}>
                             Registrarse
                         </Button>
-                        <Button variant="contained" color="primary" fullWidth sx={{ marginTop: 3 }} onClick={() => navigate('/')}>
+                        <Button variant="contained" color="primary" fullWidth sx={{ marginTop: 3 }} onClick={() => navigate('/login')}>
                         Iniciar Sesión
                         </Button>
                     </Box>
