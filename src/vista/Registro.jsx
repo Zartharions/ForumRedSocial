@@ -29,7 +29,7 @@ export const Register = () => {
         };
 
         try {
-            const response = await axios.post('http://127.0.0.1:9002/segu/register', body);
+            const response = await axios.post('http://127.0.0.1:9002/forum/register', body);
             if (response.data.result) {
                 setSuccess(true);
                 navigate('/login'); // Redirect to login after registration

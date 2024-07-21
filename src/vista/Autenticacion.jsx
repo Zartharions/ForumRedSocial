@@ -18,7 +18,7 @@ export const Auth = ({ onLoginSuccess }) => {
         };
 
         try {
-            const response = await axios.post('http://127.0.0.1:9002/segu/login', body);
+            const response = await axios.post('http://127.0.0.1:9002/forum/login', body);
             if (response.data.result) {
                 onLoginSuccess(response.data.data);
                 navigate('/');
