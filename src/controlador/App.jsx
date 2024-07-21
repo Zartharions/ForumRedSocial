@@ -6,7 +6,7 @@ import { Register } from '../vista/Registro';
 import { EditUserScreen } from '../vista/Editar';
 import { CssBaseline, Container } from '@mui/material';
 import { ReportedPostsScreen } from '../vista/Reportes';
-import { GroupViewScreen } from '../vista/Grupos';
+import { GroupViewScreen } from '../vista/Grupo';
 
 
 const App = () => {
@@ -21,8 +21,8 @@ const App = () => {
       <CssBaseline />
       <Container maxWidth="lg" sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', minHeight: '100vh', backgroundColor: '#f5f5f5' }}>
         <Routes>
-          <Route path="/" element={<Auth onLoginSuccess={handleLoginSuccess} />} />
-          <Route path="/dashboard" element={<MainScreen userData={userData} />} />
+          <Route path="/login" element={<Auth onLoginSuccess={handleLoginSuccess} />} />
+          <Route path="/" element={<MainScreen userData={userData} />} />
           <Route path="/register" element={<Register />} />
           <Route path="/perfil" element={<EditUserScreen />} />
           <Route path="/reportes" element={<ReportedPostsScreen />} />

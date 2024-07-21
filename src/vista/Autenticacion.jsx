@@ -21,7 +21,7 @@ export const Auth = ({ onLoginSuccess }) => {
             const response = await axios.post('http://127.0.0.1:9002/segu/login', body);
             if (response.data.result) {
                 onLoginSuccess(response.data.data);
-                navigate('/dashboard');
+                navigate('/');
             } else {
                 setError('Error en la autenticación, intente de nuevo.');
             }
