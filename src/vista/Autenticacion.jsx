@@ -20,9 +20,20 @@ export const Auth = ({ onLoginSuccess }) => {
         try {
             const response = await axios.post('http://127.0.0.1:9002/forum/login', body);
             if (response.data.result) {
-                localStorage.setItem('user', JSON.stringify(response.data.data));
-                onLoginSuccess(response.data.data);
-                navigate('/');
+                const { usuario, userGroups, id_usuario } = response.data.data;
+
+                if (usuario) {
+
+                    localStorage.setItem('user', JSON.stringify(usuario));
+                    localStorage.setItem('userGroups', JSON.stringify(userGroups || []));
+                    localStorage.setItem('userId', JSON.stringify(id_usuario)); 
+                    
+                    onLoginSuccess({ usuario, userGroups , id_usuario});
+
+                    navigate('/');
+                } else {
+                    setError('Datos de usuario no válidos.');
+                }
             } else {
                 setError('Error en la autenticación, intente de nuevo.');
             }
