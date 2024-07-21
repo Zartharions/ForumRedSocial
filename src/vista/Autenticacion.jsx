@@ -20,6 +20,7 @@ export const Auth = ({ onLoginSuccess }) => {
         try {
             const response = await axios.post('http://127.0.0.1:9002/forum/login', body);
             if (response.data.result) {
+                localStorage.setItem('user', JSON.stringify(response.data.data));
                 onLoginSuccess(response.data.data);
                 navigate('/');
             } else {
