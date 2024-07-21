@@ -18,6 +18,7 @@ export const MainScreen = ({ user, userGroups }) => {
     const [selectedPost, setSelectedPost] = useState(null);
     
     const [groups, setGroups] = useState(userGroups || []);
+
     const [posts, setPosts] = useState([
         { id_publicacion: 1, id_grupo: 1, grupo: 'Grupo 1', usuario: 'Usuario 1', descripcion: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus lacinia odio vitae vestibulum vestibulum. Cras venenatis euismod malesuada.', likes: 10, fecha_hora: new Date() },
         { id_publicacion: 2, id_grupo: 2, grupo: 'Grupo 2', usuario: 'Usuario 2', descripcion: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus lacinia odio vitae vestibulum vestibulum. Cras venenatis euismod malesuada.', likes: 5, fecha_hora: new Date() },
@@ -178,90 +179,100 @@ export const MainScreen = ({ user, userGroups }) => {
                                 <MoreVertIcon />
                             </IconButton>
                             <Menu
-                                anchorEl={postAnchorEl ? postAnchorEl[post.id_publicacion] : null}
+                                anchorEl={postAnchorEl && postAnchorEl[post.id_publicacion]}
                                 open={Boolean(postAnchorEl && postAnchorEl[post.id_publicacion])}
                                 onClose={() => handlePostMenuClose(post.id_publicacion)}
                             >
-                                <MenuItem onClick={() => handlePostMenuClose(post.id_publicacion)}>Editar</MenuItem>
-                                <MenuItem onClick={() => handlePostMenuClose(post.id_publicacion)}>Eliminar</MenuItem>
+                                <MenuItem onClick={() => console.log(`Reportar post ${post.id_publicacion}`)}>Reportar</MenuItem>
                             </Menu>
+                            <Typography variant="subtitle2">{post.grupo} {'>'} {post.usuario}</Typography>
                             <Typography variant="body2" color="textSecondary">
-                                {post.grupo} - {post.usuario}
+                                {new Date(post.fecha_hora).toLocaleString()}
                             </Typography>
-                            <Typography variant="body1" paragraph>
+                            <Typography variant="body1" sx={{ marginTop: 1, marginBottom: 1 }}>
                                 {post.descripcion}
                             </Typography>
-                            <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                                <IconButton size="small">
-                                    <ThumbUpIcon />
-                                </IconButton>
-                                <Typography variant="body2">{post.likes}</Typography>
-                                <IconButton size="small" onClick={() => handleCommentClick(post.id_publicacion)}>
-                                    <CommentIcon />
-                                </IconButton>
-                            </Box>
+                            <Button startIcon={<ThumbUpIcon />} onClick={() => console.log(`Like post ${post.id_publicacion}`)}>
+                                {post.likes} Like{post.likes !== 1 && 's'}
+                            </Button>
+                            <Button startIcon={<CommentIcon />} onClick={() => handleCommentClick(post.id_publicacion)}>
+                                Comentarios
+                            </Button>
+
                             {selectedPost === post.id_publicacion && (
                                 <Box sx={{ marginTop: 2 }}>
-                                    {(comments[post.id_publicacion] || []).map((comment, index) => (
-                                        <Paper key={index} sx={{ padding: 1, marginBottom: 1 }}>
+                                    <TextField
+                                        multiline
+                                        rows={2}
+                                        fullWidth
+                                        value={newComment}
+                                        onChange={(e) => setNewComment(e.target.value)}
+                                        variant="outlined"
+                                        placeholder="Escribe tu comentario aquí..."
+                                    />
+                                    <Button
+                                        variant="contained"
+                                        color="primary"
+                                        sx={{ marginTop: 1 }}
+                                        onClick={handleAddComment}
+                                    >
+                                        Comentar
+                                    </Button>
+                                    <Box sx={{ marginTop: 2 }}>
+                                        {comments[post.id_publicacion] && comments[post.id_publicacion].map((comment, index) => (
+                                            <Paper key={index} sx={{ padding : 1, marginBottom: 1 }}>
                                             <Typography variant="body2" color="textSecondary">
-                                                {comment.usuario}
+                                                {comment.usuario} - {new Date(comment.fecha_hora).toLocaleString()}
                                             </Typography>
-                                            <Typography variant="body1">{comment.comentario}</Typography>
+                                            <Typography variant="body1">
+                                                {comment.comentario}
+                                            </Typography>
                                         </Paper>
                                     ))}
-                                    <Box sx={{ display: 'flex', marginTop: 1 }}>
-                                        <TextField
-                                            fullWidth
-                                            placeholder="Añadir comentario..."
-                                            value={newComment}
-                                            onChange={(e) => setNewComment(e.target.value)}
-                                            size="small"
-                                            variant="outlined"
-                                        />
-                                        <Button onClick={handleAddComment} variant="contained" sx={{ marginLeft: 1 }}>
-                                            Comentar
-                                        </Button>
-                                    </Box>
                                 </Box>
-                            )}
-                        </Paper>
-                    ))}
-                </Container>
-            </Box>
-            <Dialog open={createGroupOpen} onClose={handleCreateGroupClose}>
-                <DialogTitle>Crear Grupo</DialogTitle>
-                <DialogContent>
-                    <DialogContentText>
-                        Por favor, introduce el nombre y la descripción del nuevo grupo.
-                    </DialogContentText>
-                    <TextField
-                        autoFocus
-                        margin="dense"
-                        label="Nombre del grupo"
-                        type="text"
-                        fullWidth
-                        variant="standard"
-                        value={newGroupName}
-                        onChange={(e) => setNewGroupName(e.target.value)}
-                    />
-                    <TextField
-                        margin="dense"
-                        label="Descripción"
-                        type="text"
-                        fullWidth
-                        variant="standard"
-                        value={newGroupDescription}
-                        onChange={(e) => setNewGroupDescription(e.target.value)}
-                    />
-                </DialogContent>
-                <DialogActions>
-                    <Button onClick={handleCreateGroupClose}>Cancelar</Button>
-                    <Button onClick={handleCreateGroup} variant="contained">Crear</Button>
-                </DialogActions>
-            </Dialog>
+                            </Box>
+                        )}
+                    </Paper>
+                ))}
+            </Container>
         </Box>
-    );
+
+        <Dialog open={createGroupOpen} onClose={handleCreateGroupClose}>
+            <DialogTitle>Crear nuevo grupo</DialogTitle>
+            <DialogContent>
+                <DialogContentText>
+                    Por favor, ingresa el nombre y una breve descripción del nuevo grupo.
+                </DialogContentText>
+                <TextField
+                    autoFocus
+                    margin="dense"
+                    label="Nombre del grupo"
+                    type="text"
+                    fullWidth
+                    value={newGroupName}
+                    onChange={(e) => setNewGroupName(e.target.value)}
+                />
+                <TextField
+                    margin="dense"
+                    label="Descripción"
+                    type="text"
+                    fullWidth
+                    multiline
+                    rows={3}
+                    value={newGroupDescription}
+                    onChange={(e) => setNewGroupDescription(e.target.value)}
+                />
+            </DialogContent>
+            <DialogActions>
+                <Button onClick={handleCreateGroupClose} color="primary">
+                    Cancelar
+                </Button>
+                <Button onClick={handleCreateGroup} color="primary">
+                    Crear
+                </Button>
+            </DialogActions>
+        </Dialog>
+    </Box>
+);
 };
 
-export default MainScreen;
