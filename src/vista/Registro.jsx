@@ -19,20 +19,20 @@ export const Register = () => {
     const submit = async (e) => {
         e.preventDefault();
         const body = {
-            usuario: username,               // Cambiar `username` a `usuario`
-            nombres: firstName,              // Cambiar `firstName` a `nombres`
-            apellidos: lastName,             // Cambiar `lastName` a `apellidos`
-            correo_electronico: email,       // Cambiar `email` a `correo_electronico`
-            contrasena: password,            // Cambiar `password` a `contrasena`
-            rol: 'usuario',                  // Campo opcional
-            universidad: university          // Campo opcional
+            usuario: username,               
+            nombres: firstName,              
+            apellidos: lastName,             
+            correo_electronico: email,      
+            contrasena: password,           
+            rol: 'usuario',                  
+            universidad: university          
         };
     
         try {
             const response = await axios.post('http://127.0.0.1:9002/forum/register', body);
             if (response.data.result) {
                 setSuccess(true);
-                navigate('/login'); // Redirect to login after registration
+                navigate('/login'); 
             } else {
                 setError('Error en el registro, intente de nuevo.');
             }
