@@ -5,7 +5,7 @@ import {
     TextField, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle 
 } from '@mui/material';
 import { Search as SearchIcon, AccountCircle, MoreVert as MoreVertIcon, ThumbUp as ThumbUpIcon, Comment as CommentIcon } from '@mui/icons-material';
-import axios from 'axios'; // Asegúrate de tener axios instalado
+import axios from 'axios'; 
 
 export const MainScreen = ({ user, userGroups }) => {
     const [anchorEl, setAnchorEl] = useState(null);
@@ -57,7 +57,7 @@ export const MainScreen = ({ user, userGroups }) => {
 
     const handleCreateGroup = async () => {
         try {
-            const id_usuario = localStorage.getItem('id_usuario');  // Obtén el id_usuario del localStorage
+            const id_usuario = localStorage.getItem('id_usuario');  
             if (!id_usuario) {
                 console.error('ID de usuario no encontrado');
                 return;
@@ -66,12 +66,12 @@ export const MainScreen = ({ user, userGroups }) => {
             const response = await axios.post('http://127.0.0.1:9002/forum/create', {
                 nombre_grupo: newGroupName,
                 descripcion: newGroupDescription,
-                id_usuario  // Incluye el id_usuario en el cuerpo de la solicitud
+                id_usuario 
             });
 
             if (response.data.result) {
                 const newGroup = {
-                    id_grupo: response.data.data,  // Asegúrate de que esto coincide con la respuesta del back-end
+                    id_grupo: response.data.data,   
                     nombre_grupo: newGroupName,
                     descripcion: newGroupDescription
                 };
@@ -117,7 +117,7 @@ export const MainScreen = ({ user, userGroups }) => {
         <Box sx={{ display: 'flex' }}>
             <CssBaseline />
 
-            {/* App Bar */}
+
             <AppBar position="fixed" sx={{ zIndex: (theme) => theme.zIndex.drawer + 1 }}>
                 <Toolbar>
                     <Typography variant="h6" noWrap sx={{ flexGrow: 1 }}>
@@ -143,13 +143,13 @@ export const MainScreen = ({ user, userGroups }) => {
                             onClose={handleClose}
                         >
                             <MenuItem onClick={handleClose}>Perfil</MenuItem>
-                            <MenuItem onClick={() => { /* Implementar lógica para cerrar sesión */ }}>Cerrar sesión</MenuItem>
+                            <MenuItem onClick={() => { /* lógica para cerrar sesión */ }}>Cerrar sesión</MenuItem>
                         </Menu>
                     </Box>
                 </Toolbar>
             </AppBar>
 
-            {/* Drawer */}
+           
             <Drawer
                 variant="permanent"
                 sx={{
@@ -190,7 +190,7 @@ export const MainScreen = ({ user, userGroups }) => {
             >
                 <Toolbar />
 
-                {/* Barra de búsqueda */}
+
                 <Paper component="form" sx={{ display: 'flex', alignItems: 'center', mb: 3 }}>
                     <InputBase
                         sx={{ ml: 1, flex: 1 }}
@@ -203,7 +203,7 @@ export const MainScreen = ({ user, userGroups }) => {
                     </IconButton>
                 </Paper>
 
-                {/* Publicaciones */}
+              
                 {filteredPosts.length > 0 ? (
                     filteredPosts.map((post) => (
                         <Box key={post.id_publicacion} sx={{ mb: 3, border: '1px solid #ddd', borderRadius: '4px', p: 2 }}>
@@ -221,7 +221,7 @@ export const MainScreen = ({ user, userGroups }) => {
                                 </IconButton>
                             </Box>
 
-                            {/* Menú de publicación */}
+                        
                             <Menu
                                 anchorEl={postAnchorEl[post.id_publicacion]}
                                 open={Boolean(postAnchorEl[post.id_publicacion])}
