@@ -70,7 +70,7 @@ export const Auth = ({ onLoginSuccess }) => {
                     marginBottom: 3, 
                     fontWeight: 'bold'
                 }}>
-                    ForumRSE
+                    AlumniUG
                 </Typography>
                 
                 <Paper elevation={8} sx={{ 

@@ -1,18 +1,24 @@
 import React, { useState } from 'react';
-import { AppBar, Toolbar, Typography, IconButton, InputBase, Menu, MenuItem, Drawer, List, ListItem, ListItemText, Box, Paper, CssBaseline, Container, TextField, Button } from '@mui/material';
-import { Search as SearchIcon, AccountCircle, MoreVert as MoreVertIcon } from '@mui/icons-material';
+import { 
+    AppBar, Toolbar, Typography, IconButton, InputBase, Menu, MenuItem, 
+    Drawer, List, ListItem, ListItemText, Box, Paper, CssBaseline, 
+    Container, TextField, Button 
+} from '@mui/material';
+import { Search as SearchIcon, AccountCircle } from '@mui/icons-material';
+import { useNavigate } from 'react-router-dom';
 
 export const EditUserScreen = () => {
     const [anchorEl, setAnchorEl] = useState(null);
     const [searchQuery, setSearchQuery] = useState('');
-
-    // State for user details
     const [userDetails, setUserDetails] = useState({
         usuario: 'Usuario 1',
         celular: '1234567890',
         clave: '',
+        confirmarClave: '', // Campo añadido para la verificación de clave
         universidad: 'Universidad XYZ',
     });
+
+    const navigate = useNavigate();
 
     const handleMenu = (event) => {
         setAnchorEl(event.currentTarget);
@@ -23,7 +29,11 @@ export const EditUserScreen = () => {
     };
 
     const handleLogout = () => {
-        console.log('Logout');
+        localStorage.removeItem('user');
+        localStorage.removeItem('userGroups');
+        localStorage.removeItem('userId');
+        localStorage.removeItem('token');
+        navigate('/login');
     };
 
     const handleInputChange = (e) => {
@@ -35,6 +45,10 @@ export const EditUserScreen = () => {
     };
 
     const handleSave = () => {
+        if (userDetails.clave !== userDetails.confirmarClave) {
+            alert('Las contraseñas no coinciden');
+            return;
+        }
         console.log('Guardar cambios', userDetails);
     };
 
@@ -43,8 +57,15 @@ export const EditUserScreen = () => {
             <CssBaseline />
             <AppBar position="fixed">
                 <Toolbar>
-                    <Typography variant="h6" noWrap sx={{ flexGrow: 1 }}>
-                        FORUMRS
+                    <Typography 
+                        variant="h6" 
+                        noWrap 
+                        sx={{ flexGrow: 1 }}
+                        component="a" 
+                        onClick={() => navigate('/')} 
+                        style={{ cursor: 'pointer' }}
+                    >
+                        AlumniUG
                     </Typography>
                     <Box sx={{ flexGrow: 2, display: 'flex', justifyContent: 'left' }}>
                         <InputBase
@@ -86,7 +107,7 @@ export const EditUserScreen = () => {
                         open={Boolean(anchorEl)}
                         onClose={handleClose}
                     >
-                        <MenuItem onClick={handleClose}>Configuración</MenuItem>
+                        <MenuItem onClick={() => { handleClose(); navigate('/'); }}>Inicio</MenuItem>
                         <MenuItem onClick={handleLogout}>Cerrar sesión</MenuItem>
                     </Menu>
                 </Toolbar>
@@ -152,11 +173,22 @@ export const EditUserScreen = () => {
                             fullWidth
                             margin="normal"
                         />
+                        
                         <TextField
-                            label="Universidad"
+                            label="Facultad"
                             variant="outlined"
-                            name="universidad"
+                            name="Facultad"
                             value={userDetails.universidad}
+                            onChange={handleInputChange}
+                            fullWidth
+                            margin="normal"
+                        />
+                        <TextField
+                            label="Confirmar Clave"
+                            type="password"
+                            variant="outlined"
+                            name="confirmarClave"
+                            value={userDetails.confirmarClave}
                             onChange={handleInputChange}
                             fullWidth
                             margin="normal"

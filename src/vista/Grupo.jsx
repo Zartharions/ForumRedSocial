@@ -24,6 +24,7 @@ import {
   DialogTitle
 } from '@mui/material';
 import { Search as SearchIcon, AccountCircle, MoreVert as MoreVertIcon, ThumbUp as ThumbUpIcon, Add as AddIcon, Comment as CommentIcon } from '@mui/icons-material';
+import { useNavigate } from 'react-router-dom';
 
 export const GroupViewScreen = () => {
   const [anchorEl, setAnchorEl] = useState(null);
@@ -45,6 +46,8 @@ export const GroupViewScreen = () => {
   const [comments, setComments] = useState({});
   const [newComment, setNewComment] = useState('');
   const [selectedPost, setSelectedPost] = useState(null);
+
+  const navigate = useNavigate();
 
   const handleMenu = (event) => {
     setAnchorEl(event.currentTarget);
@@ -83,7 +86,11 @@ export const GroupViewScreen = () => {
   };
 
   const handleLogout = () => {
-    console.log('Logout');
+    localStorage.removeItem('user');
+    localStorage.removeItem('userGroups');
+    localStorage.removeItem('userId');
+    localStorage.removeItem('token');
+    navigate('/login');
   };
 
   const handleGroupClick = (group) => {
@@ -130,8 +137,15 @@ export const GroupViewScreen = () => {
       <CssBaseline />
       <AppBar position="fixed">
         <Toolbar>
-          <Typography variant="h6" noWrap sx={{ flexGrow: 1 }}>
-            FORUMRS
+          <Typography
+            variant="h6"
+            noWrap
+            sx={{ flexGrow: 1 }}
+            component="a"
+            onClick={() => navigate('/')}
+            style={{ cursor: 'pointer' }}
+          >
+            AlumniUG
           </Typography>
           <Box sx={{ flexGrow: 2, display: 'flex', justifyContent: 'left' }}>
             <InputBase
@@ -171,7 +185,7 @@ export const GroupViewScreen = () => {
             open={Boolean(anchorEl)}
             onClose={handleClose}
           >
-            <MenuItem onClick={handleClose}>Configuración</MenuItem>
+            <MenuItem onClick={() => { handleClose(); navigate('/perfil'); }}>Perfil</MenuItem>
             <MenuItem onClick={handleLogout}>Cerrar sesión</MenuItem>
           </Menu>
         </Toolbar>

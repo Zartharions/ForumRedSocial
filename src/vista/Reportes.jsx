@@ -60,7 +60,7 @@ export const ReportedPostsScreen = () => {
       <AppBar position="fixed">
         <Toolbar>
           <Typography variant="h6" noWrap sx={{ flexGrow: 1 }}>
-            FORUMRS
+            AlumniUG
           </Typography>
           <Box sx={{ flexGrow: 2, display: 'flex', justifyContent: 'left' }}>
             <InputBase

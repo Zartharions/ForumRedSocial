@@ -5,7 +5,8 @@ import {
     TextField, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle 
 } from '@mui/material';
 import { Search as SearchIcon, AccountCircle, MoreVert as MoreVertIcon, ThumbUp as ThumbUpIcon, Comment as CommentIcon } from '@mui/icons-material';
-import axios from 'axios'; 
+import axios from 'axios';
+import { useNavigate } from 'react-router-dom'; // Cambiado a useNavigate
 
 export const MainScreen = ({ user, userGroups }) => {
     const [anchorEl, setAnchorEl] = useState(null);
@@ -24,6 +25,8 @@ export const MainScreen = ({ user, userGroups }) => {
         { id_publicacion: 2, id_grupo: 2, grupo: 'Grupo 2', usuario: 'Usuario 2', descripcion: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus lacinia odio vitae vestibulum vestibulum. Cras venenatis euismod malesuada.', likes: 5, fecha_hora: new Date() },
         { id_publicacion: 3, id_grupo: 3, grupo: 'Grupo 3', usuario: 'Usuario 3', descripcion: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus lacinia odio vitae vestibulum vestibulum. Cras venenatis euismod malesuada.', likes: 8, fecha_hora: new Date() }
     ]);
+
+    const navigate = useNavigate(); // Usa useNavigate en lugar de useHistory
 
     useEffect(() => {
         setGroups(userGroups || []);
@@ -113,15 +116,22 @@ export const MainScreen = ({ user, userGroups }) => {
         post.descripcion.toLowerCase().includes(searchQuery.toLowerCase())
     );
 
+    const handleLogout = () => {
+        localStorage.removeItem('user');
+        localStorage.removeItem('userGroups');
+        localStorage.removeItem('userId');
+        localStorage.removeItem('token'); // Asegúrate de que este sea el nombre correcto si utilizas otro nombre para el token
+        navigate('/login');
+    };
+
     return (
         <Box sx={{ display: 'flex' }}>
             <CssBaseline />
 
-
             <AppBar position="fixed" sx={{ zIndex: (theme) => theme.zIndex.drawer + 1 }}>
                 <Toolbar>
                     <Typography variant="h6" noWrap sx={{ flexGrow: 1 }}>
-                        ForumRSE
+                        AlumniUG
                     </Typography>
                     <Box sx={{ display: 'flex', alignItems: 'center' }}>
                         <Typography variant="h6" sx={{ marginRight: 2 }}>
@@ -142,14 +152,13 @@ export const MainScreen = ({ user, userGroups }) => {
                             open={Boolean(anchorEl)}
                             onClose={handleClose}
                         >
-                            <MenuItem onClick={handleClose}>Perfil</MenuItem>
-                            <MenuItem onClick={() => { /* lógica para cerrar sesión */ }}>Cerrar sesión</MenuItem>
+                            <MenuItem onClick={() => navigate('/perfil')}>Perfil</MenuItem>
+                            <MenuItem onClick={handleLogout}>Cerrar sesión</MenuItem>
                         </Menu>
                     </Box>
                 </Toolbar>
             </AppBar>
 
-           
             <Drawer
                 variant="permanent"
                 sx={{
@@ -164,7 +173,7 @@ export const MainScreen = ({ user, userGroups }) => {
                 <Toolbar />
                 <Box sx={{ overflow: 'auto' }}>
                     <List>
-                    {groups.length > 0 ? (
+                        {groups.length > 0 ? (
                             groups.map((group) => (
                                 <ListItem button key={group.id_grupo}>
                                     <ListItemText primary={group.nombre_grupo} />
@@ -190,7 +199,6 @@ export const MainScreen = ({ user, userGroups }) => {
             >
                 <Toolbar />
 
-
                 <Paper component="form" sx={{ display: 'flex', alignItems: 'center', mb: 3 }}>
                     <InputBase
                         sx={{ ml: 1, flex: 1 }}
@@ -203,7 +211,6 @@ export const MainScreen = ({ user, userGroups }) => {
                     </IconButton>
                 </Paper>
 
-              
                 {filteredPosts.length > 0 ? (
                     filteredPosts.map((post) => (
                         <Box key={post.id_publicacion} sx={{ mb: 3, border: '1px solid #ddd', borderRadius: '4px', p: 2 }}>
@@ -221,7 +228,6 @@ export const MainScreen = ({ user, userGroups }) => {
                                 </IconButton>
                             </Box>
 
-                        
                             <Menu
                                 anchorEl={postAnchorEl[post.id_publicacion]}
                                 open={Boolean(postAnchorEl[post.id_publicacion])}
