@@ -5,7 +5,6 @@ import { MainScreen } from '../vista/Dashboard';
 import { Register } from '../vista/Registro';
 import { EditUserScreen } from '../vista/Editar';
 import { CssBaseline, Container } from '@mui/material';
-import { ReportedPostsScreen } from '../vista/Reportes';
 import { GroupViewScreen } from '../vista/Grupo';
 
 const App = () => {
@@ -44,7 +43,6 @@ const App = () => {
           <Route path="/" element={<MainScreen user={userData ? userData.usuario : null} userGroups={userData ? userData.userGroups : []} />} />
           <Route path="/register" element={<Register />} />
           <Route path="/perfil" element={<EditUserScreen />} />
-          <Route path="/reportes" element={<ReportedPostsScreen />} />
           <Route path="/grupo" element={<GroupViewScreen />} />
         </Routes>
       </Container>

@@ -29,6 +29,9 @@ export const EditUserScreen = () => {
     const [snackbarSeverity, setSnackbarSeverity] = useState('success');
     const [showSearchResults, setShowSearchResults] = useState(false); // Controla la visibilidad de los resultados de búsqueda
     const [userName, setUserName] = useState(''); // Para almacenar el nombre del usuario
+    const [selectedGroupDescription, setSelectedGroupDescription] = useState('');
+    const [joinGroupOpen, setJoinGroupOpen] = useState(false); // Controla la visibilidad de la ventana
+    const [selectedGroup, setSelectedGroup] = useState(''); // Para almacenar el grupo seleccionado
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -98,9 +101,11 @@ export const EditUserScreen = () => {
             try {
                 const response = await axios.get('http://127.0.0.1:5000/forum/grupos');
                 if (response.data.result) {
-                    const filteredResults = response.data.data.filter(group => group.toLowerCase().includes(query.toLowerCase()));
+                    const filteredResults = response.data.data.filter(group => 
+                        group.nombre_grupo.toLowerCase().includes(query.toLowerCase())
+                    );
                     setSearchResults(filteredResults);
-                    setShowSearchResults(true); // Muestra los resultados de búsqueda
+                    setShowSearchResults(true);
                 } else {
                     console.error('Error al obtener los grupos:', response.data.message);
                 }
@@ -109,7 +114,7 @@ export const EditUserScreen = () => {
             }
         } else {
             setSearchResults([]);
-            setShowSearchResults(false); // Oculta los resultados de búsqueda
+            setShowSearchResults(false);
         }
     };
 
@@ -172,6 +177,18 @@ export const EditUserScreen = () => {
         setNewGroupDescription('');
     };
 
+    const handleGroupSelect = (group) => {
+        setSelectedGroup(group.nombre_grupo);
+        setSelectedGroupDescription(group.descripcion);
+        setJoinGroupOpen(true);
+    };
+
+    const handleJoinGroupClose = () => {
+        setJoinGroupOpen(false);
+        setSelectedGroup('');
+        setSelectedGroupDescription('');
+    };
+
     const handleCreateGroup = async () => {
         try {
             const id_usuario = JSON.parse(localStorage.getItem('userId'));  
@@ -213,6 +230,42 @@ export const EditUserScreen = () => {
             setSnackbarOpen(true);
         }
     };
+
+    const handleJoinGroup = async () => {
+        try {
+            const id_usuario = JSON.parse(localStorage.getItem('userId'));
+            if (!id_usuario) {
+                console.error('ID de usuario no encontrado');
+                setSnackbarMessage('ID de usuario no encontrado');
+                setSnackbarSeverity('error');
+                setSnackbarOpen(true);
+                return;
+            }
+
+            const response = await axios.post('http://127.0.0.1:5000/forum/join', {
+                id_usuario,
+                nombre_grupo: selectedGroup
+            });
+
+            if (response.data.result) {
+                setSnackbarMessage('Unido al grupo correctamente');
+                setSnackbarSeverity('success');
+                setSnackbarOpen(true);
+                handleJoinGroupClose();
+            } else {
+                setSnackbarMessage(response.data.message);
+                setSnackbarSeverity('error');
+                setSnackbarOpen(true);
+            }
+        } catch (error) {
+            console.error('Ya perteneces a este grupo:', error);
+            setSnackbarMessage('Ya perteneces a este grupo');
+            setSnackbarSeverity('error');
+            setSnackbarOpen(true);
+        }
+    };
+
+    
 
     const user = JSON.parse(localStorage.getItem('user'));
 
@@ -269,8 +322,9 @@ export const EditUserScreen = () => {
                                                         variant="outlined"
                                                         fullWidth
                                                         sx={{ textAlign: 'left', justifyContent: 'flex-start' }}
+                                                        onClick={() => handleGroupSelect(result)}
                                                     >
-                                                        {result}
+                                                        {result.nombre_grupo}
                                                     </Button>
                                                 </ListItem>
                                             ))
@@ -333,7 +387,7 @@ export const EditUserScreen = () => {
                     <List>
                         {groups.length > 0 ? (
                             groups.map((group) => (
-                                <ListItem key={group.id_grupo} sx={{ mb: 1 }}>
+                                <ListItem button key={group.id_grupo} onClick={() => handleGroupClick(group)}>
                                     <Button
                                         variant="outlined"
                                         fullWidth
@@ -434,6 +488,18 @@ export const EditUserScreen = () => {
                     <DialogActions>
                         <Button onClick={handleCreateGroupClose}>Cancelar</Button>
                         <Button onClick={handleCreateGroup}>Crear</Button>
+                    </DialogActions>
+                </Dialog>
+                    <Dialog open={joinGroupOpen} onClose={handleJoinGroupClose}>
+                    <DialogTitle>{`Unirse al grupo ${selectedGroup}`}</DialogTitle>
+                    <DialogContent>
+                        <Typography variant="body1">
+                            {selectedGroupDescription}
+                        </Typography>
+                    </DialogContent>
+                    <DialogActions>
+                        <Button onClick={handleJoinGroupClose}>Cancelar</Button>
+                        <Button onClick={handleJoinGroup}>Unirse</Button>
                     </DialogActions>
                 </Dialog>
 
