@@ -42,7 +42,7 @@ export const MainScreen = () => {
             const userId = JSON.parse(localStorage.getItem('userId'));
             if (userId) {
                 try {
-                    const response = await axios.get(`http://127.0.0.1:5000/grupo/list?id_usuario=${userId}`);
+                    const response = await axios.get(`http://127.0.0.1:9002/grupo/list?id_usuario=${userId}`);
                     if (response.data.result) {
                         setGroups(response.data.data);
                     } else {
@@ -58,7 +58,7 @@ export const MainScreen = () => {
             const userId = JSON.parse(localStorage.getItem('userId'));
             if (userId) {
                 try {
-                    const response = await axios.get(`http://127.0.0.1:5000/forum/user_posts?id_usuario=${userId}`);
+                    const response = await axios.get(`http://127.0.0.1:9002/forum/user_posts?id_usuario=${userId}`);
                     if (response.data.result) {
                         setPosts(response.data.data);
                     } else {
@@ -97,7 +97,7 @@ export const MainScreen = () => {
 
         if (query.length > 0) {
             try {
-                const response = await axios.get('http://127.0.0.1:5000/forum/grupos');
+                const response = await axios.get('http://127.0.0.1:9002/forum/grupos');
                 if (response.data.result) {
                     const filteredResults = response.data.data.filter(group => 
                         group.nombre_grupo.toLowerCase().includes(query.toLowerCase())
@@ -137,7 +137,7 @@ export const MainScreen = () => {
                 return;
             }
 
-            const response = await axios.post('http://127.0.0.1:5000/forum/create', {
+            const response = await axios.post('http://127.0.0.1:9002/forum/create', {
                 nombre_grupo: newGroupName,
                 descripcion: newGroupDescription,
                 id_usuario
@@ -191,7 +191,7 @@ export const MainScreen = () => {
                 return;
             }
 
-            const response = await axios.post('http://127.0.0.1:5000/forum/join', {
+            const response = await axios.post('http://127.0.0.1:9002/forum/join', {
                 id_usuario,
                 nombre_grupo: selectedGroup
             });

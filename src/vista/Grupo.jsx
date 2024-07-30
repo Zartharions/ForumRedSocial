@@ -46,7 +46,7 @@ export const GroupViewScreen = () => {
       const userId = JSON.parse(localStorage.getItem('userId'));
       if (userId) {
         try {
-          const response = await axios.get(`http://127.0.0.1:5000/grupo/list?id_usuario=${userId}`);
+          const response = await axios.get(`http://127.0.0.1:9002/grupo/list?id_usuario=${userId}`);
           if (response.data.result) {
             setGroups(response.data.data);
           } else {
@@ -69,7 +69,7 @@ export const GroupViewScreen = () => {
       return;
     }
     try {
-      const response = await axios.get(`http://127.0.0.1:5000/forum/post?id_grupo=${groupId}`);
+      const response = await axios.get(`http://127.0.0.1:9002/forum/post?id_grupo=${groupId}`);
       if (response.data.result) {
         setPosts(response.data.data);
       } else {
@@ -89,7 +89,7 @@ export const GroupViewScreen = () => {
 
 const fetchGroupPosts = async (groupId) => {
   try {
-    const response = await axios.get(`http://127.0.0.1:5000/forum/post?id_grupo=${groupId}`);
+    const response = await axios.get(`http://127.0.0.1:9002/forum/post?id_grupo=${groupId}`);
     if (response.data.result) {
       setPosts(response.data.data);
     } else {
@@ -125,7 +125,7 @@ const handleCreateGroupSubmit = async () => {
   }
 
   try {
-    const response = await fetch('http://127.0.0.1:5000/forum/grupo', {
+    const response = await fetch('http://127.0.0.1:9002/forum/grupo', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -168,7 +168,7 @@ const handleSearchChange = async (e) => {
 
   if (query.length > 0) {
       try {
-          const response = await axios.get('http://127.0.0.1:5000/forum/grupos');
+          const response = await axios.get('http://127.0.0.1:9002/forum/grupos');
           if (response.data.result) {
               const filteredResults = response.data.data.filter(group => 
                   group.nombre_grupo.toLowerCase().includes(query.toLowerCase())
@@ -241,7 +241,7 @@ const handleCreateGroup = async () => {
             return;
         }
 
-        const response = await axios.post('http://127.0.0.1:5000/forum/create', {
+        const response = await axios.post('http://127.0.0.1:9002/forum/create', {
             nombre_grupo: newGroupName,
             descripcion: newGroupDescription,
             id_usuario
@@ -283,7 +283,7 @@ const handleJoinGroup = async () => {
             return;
         }
 
-        const response = await axios.post('http://127.0.0.1:5000/forum/join', {
+        const response = await axios.post('http://127.0.0.1:9002/forum/join', {
             id_usuario,
             nombre_grupo: selectedGroup.nombre_grupo
         });
@@ -316,7 +316,7 @@ const handlePublish = useCallback(async () => {
     const userId = userData.id_usuario; // Extrae el id_usuario
 
     if (newPost.trim()) {
-      const response = await fetch('http://127.0.0.1:5000/Publicaciones/List', {
+      const response = await fetch('http://127.0.0.1:9002/Publicaciones/List', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -368,7 +368,7 @@ const handleAddComment = async (postId) => {
   if (commentText === '') return;
 
   try {
-    const response = await axios.post(`http://127.0.0.1:5000/forum/${postId}/comentar`, {
+    const response = await axios.post(`http://127.0.0.1:9002/forum/${postId}/comentar`, {
       comentario_contenido: commentText,
       comentario_id_usuario: JSON.parse(localStorage.getItem('userId')),
       comentario_id_publicacion: postId
