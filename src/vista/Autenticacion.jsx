@@ -1,35 +1,44 @@
 import React, { useState } from 'react';
+import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
-import { Container, Box, TextField, Button, Typography, Paper, Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions } from '@mui/material';
+import { Container, Box, TextField, Button, Typography, Paper } from '@mui/material';
 
-export const Auth = () => {
-    const [username, setUsername] = useState('');
+export const Auth = ({ onLoginSuccess }) => {
+    const [usuario, setUsuario] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState('');
-    const [success, setSuccess] = useState(false);
 
     const navigate = useNavigate();
 
-    const handleSubmit = (e) => {
+    const submit = async (e) => {
         e.preventDefault();
+        const body = {
+            login_user: usuario,
+            login_password: password
+        };
 
-        const storedUser = JSON.parse(localStorage.getItem('usuario'));
+        try {
+            const response = await axios.post('http://127.0.0.1:9002/forum/login', body);
+            if (response.data.result) {
+                const { id_usuario, usuario, rol, token } = response.data.data;
 
-        if (!storedUser) {
-            setError('No hay usuarios registrados. Regístrate primero.');
-            return;
+                // Guardar en localStorage
+                localStorage.setItem('userId', JSON.stringify(id_usuario));
+                localStorage.setItem('usuario', JSON.stringify(usuario));
+                localStorage.setItem('rol', JSON.stringify(rol));
+                localStorage.setItem('token', JSON.stringify(token));
+                
+                // Opcional: Llamar a onLoginSuccess si es necesario
+                onLoginSuccess({ id_usuario, usuario, rol, token });
+
+                navigate('/');
+            } else {
+                setError('Error en la autenticación, intente de nuevo.');
+            }
+        } catch (error) {
+            console.error('Error:', error);
+            setError('Error en la autenticación, intente de nuevo.');
         }
-
-        if (username === storedUser.usuario && password === storedUser.contrasena) {
-            setSuccess(true);
-            setTimeout(() => navigate('/'), 2000); // Navegar a la página de inicio después de 2 segundos
-        } else {
-            setError('Usuario o contraseña incorrectos.');
-        }
-    };
-
-    const handleClose = () => {
-        setSuccess(false);
     };
 
     return (
@@ -41,9 +50,6 @@ export const Auth = () => {
             width: '115%', 
             backgroundColor: '#5f6769', 
             padding: 0,
-            margin: 0,
-            backgroundColor: '#5f6769',
-            padding: 0,
             margin: 0
         }}>
             <Box sx={{ 
@@ -52,44 +58,55 @@ export const Auth = () => {
                 justifyContent: 'center', 
                 alignItems: 'center', 
                 width: '100%', 
-                maxWidth: '600px', 
-                padding: 2, 
+                maxWidth: '500px', 
+                padding: 6, 
                 backgroundColor: '#0c4e5f', 
-                borderRadius: 4
+                borderRadius: 3
             }}>
                 <Typography variant="h4" align="center" sx={{ 
                     color: '#dfcdc3', 
-                    marginBottom: 2, 
+                    marginBottom: 3, 
                     fontWeight: 'bold'
                 }}>
                     AlumniUG
                 </Typography>
+                
                 <Paper elevation={8} sx={{ 
                     padding: 6, 
                     backgroundColor: '#0c4e5f', 
-                    borderRadius: 16, 
+                    borderRadius: 3, 
                     width: '100%', 
+                    maxWidth: '400px', 
                     boxSizing: 'border-box'
                 }}>
-                    <Box component="form" onSubmit={handleSubmit} sx={{ 
+                    <Box component="form" onSubmit={submit} sx={{ 
                         display: 'flex', 
                         flexDirection: 'column' 
                     }}>
+                        <Typography variant="h4" align="center" sx={{ 
+                            color: '#dfcdc3', 
+                            marginBottom: 3, 
+                            fontWeight: 'bold'
+                        }}>
+                            Iniciar Sesión
+                        </Typography>
                         <TextField
                             label="Usuario"
                             variant="outlined"
-                            value={username}
-                            onChange={(e) => setUsername(e.target.value)}
+                            value={usuario}
+                            onChange={(e) => setUsuario(e.target.value)}
                             required
                             fullWidth
                             margin="normal"
-                            sx={{input: { color: '#202427' }, 
-                            '& .MuiOutlinedInput-root': { 
-                                '& fieldset': { borderColor: '#202427' }, 
-                                '&:hover fieldset': { borderColor: '#8cb924' } 
-                            }, 
-                            '& .MuiInputLabel-root': { color: '#dfcdc3' }, 
-                            '& .MuiFormLabel-root.Mui-focused': { color: '#8cb924' } }}
+                            sx={{ 
+                                input: { color: '#202427' }, 
+                                '& .MuiOutlinedInput-root': { 
+                                    '& fieldset': { borderColor: '#202427' }, 
+                                    '&:hover fieldset': { borderColor: '#8cb924' }
+                                },
+                                '& .MuiInputLabel-root': { color: '#dfcdc3' },
+                                '& .MuiFormLabel-root.Mui-focused': { color: '#8cb924' }
+                            }}
                         />
                         <TextField
                             label="Contraseña"
@@ -100,51 +117,28 @@ export const Auth = () => {
                             required
                             fullWidth
                             margin="normal"
-                            sx={{input: { color: '#202427' }, 
-                            '& .MuiOutlinedInput-root': { 
-                                '& fieldset': { borderColor: '#202427' }, 
-                                '&:hover fieldset': { borderColor: '#8cb924' } 
-                            }, 
-                            '& .MuiInputLabel-root': { color: '#dfcdc3' }, 
-                            '& .MuiFormLabel-root.Mui-focused': { color: '#8cb924' } }}
+                            sx={{ 
+                                input: { color: '#202427' }, 
+                                '& .MuiOutlinedInput-root': { 
+                                    '& fieldset': { borderColor: '#202427' }, 
+                                    '&:hover fieldset': { borderColor: '#8cb924' }
+                                },
+                                '& .MuiInputLabel-root': { color: '#dfcdc3' },
+                                '& .MuiFormLabel-root.Mui-focused': { color: '#8cb924' }
+                            }}
                         />
-                        {error && (
-                            <Typography variant="body2" color="error" align="center" sx={{ marginTop: 2 }}>
-                                {error}
-                            </Typography>
-                        )}
-                        <Button
-                            type="submit"
-                            variant="contained"
-                            color="primary"
-                            sx={{ marginTop: 3 }}
-                        >
-                            Iniciar Sesión
+                        {error && <Typography color="error" align="center" sx={{ marginTop: 2 }}>{error}</Typography>}
+                        <Button type="submit" variant="contained" color="success" fullWidth sx={{ marginTop: 3 }}>
+                            Ingresar
                         </Button>
-                        <Button
-                            variant="contained"
-                            color="success"
-                            sx={{ marginTop: 2 }}
-                            onClick={() => navigate('/register')}
-                        >
-                            Registrarse
-                        </Button>
+                    </Box>
+                    <Box sx={{ textAlign: 'center', marginTop: 3 }}>
+                        <Typography variant="body2" sx={{ color: '#8cb924' }}>
+                            <a href="/register" style={{ textDecoration: 'none', color: '#8cb924' }}>Registrarse</a>
+                        </Typography>
                     </Box>
                 </Paper>
             </Box>
-            <Dialog open={success} onClose={handleClose}>
-                <DialogTitle>Inicio de Sesión Exitoso</DialogTitle>
-                <DialogContent>
-                    <DialogContentText>
-                        Has iniciado sesión exitosamente.
-                    </DialogContentText>
-                </DialogContent>
-                <DialogActions>
-                    <Button onClick={() => navigate('/home')} color="primary">
-                        Ir a Inicio
-                    </Button>
-                </DialogActions>
-            </Dialog>
         </Container>
     );
 };

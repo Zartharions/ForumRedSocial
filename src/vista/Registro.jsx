@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { Container, Box, TextField, Button, Typography, Paper, Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions, Grid } from '@mui/material';
 
@@ -26,7 +27,7 @@ export const Register = () => {
         return phonePattern.test(phone);
     };
 
-    const submit = (e) => {
+    const submit = async (e) => {
         e.preventDefault();
 
         if (!isInstitutionalEmail(email)) {
@@ -39,7 +40,7 @@ export const Register = () => {
             return;
         }
 
-        const userData = {
+        const body = {
             usuario: username,               
             nombres: firstName,              
             apellidos: lastName,             
@@ -48,13 +49,21 @@ export const Register = () => {
             rol: 'usuario',                  
             universidad: university          
         };
-
-        // Guardar en localStorage
-        localStorage.setItem('usuario', JSON.stringify(userData));
-        setSuccess(true);
-        setTimeout(() => navigate('/login'), 2000); // Navegar a la página de login después de 2 segundos
+    
+        try {
+            const response = await axios.post('http://127.0.0.1:9002/forum/register', body);
+            if (response.data.result) {
+                setSuccess(true);
+                navigate('/login'); 
+            } else {
+                setError('Error en el registro, intente de nuevo.');
+            }
+        } catch (error) {
+            console.error('Error:', error);
+            setError('Error en el registro, intente de nuevo.');
+        }
     };
-
+    
     const handleClose = () => {
         setSuccess(false);
     };
@@ -199,6 +208,7 @@ export const Register = () => {
                                     variant="outlined"
                                     value={phone}
                                     onChange={(e) => {
+                                        
                                         const formattedPhone = e.target.value.replace(/[^0-9]/g, '').slice(0, 10);
                                         setPhone(formattedPhone);
                                     }}
